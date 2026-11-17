@@ -1,0 +1,150 @@
+# PvP Coinflip specification
+
+Use this specification for application code that imports `@sugarcasino/sdk` and builds PvP Coinflip. If the user is using MCP tools instead of SDK code, use `sugar-mcp`; the MCP create input is `creatorSide`, which maps to SDK `side`.
+
+Use the SDK PvP Coinflip builders, BCS helpers, and registry lookup behavior. Do not adapt standard bet builders for PvP.
+
+## Default workflow
+
+1. Identify the PvP action: `create`, `join`, or `cancel`.
+2. Use the action-specific `client.sugar.tx.pvpCoinflip` builder.
+3. Pass `gameId` to `joinGame` and `cancelGame`.
+4. Use `client.sugar.getPvPCoinflipGames(options?)` for unresolved lobby state.
+5. Use `client.sugar.bcs.PvPCoinflipGame.get({ client, objectId })` when one live pending game object is needed.
+6. Decode PvP events with generated BCS helpers.
+7. Decode any accompanying standard `BetResultEvent.game_details` with [event parsing](../../event-parsing/references/events.md).
+
+## Live parameters
+
+Read `client.sugar.getGameParameters({ game: 'pvp-coinflip', coinType })` before presenting or validating current PvP stake limits or game settings. Results are cached for 30 minutes by default; use `ignoreCache: true` when the lobby requires a fresh on-chain read.
+
+## Public surface
+
+```ts
+client.sugar.getPvPCoinflipGames(options?);
+client.sugar.tx.pvpCoinflip.createGame(options);
+client.sugar.tx.pvpCoinflip.joinGame(options);
+client.sugar.tx.pvpCoinflip.cancelGame(options);
+client.sugar.bcs.PvPCoinflipGame;
+```
+
+Use `PvPCoinflipAction` and `PvPGame` from `@sugarcasino/sdk/games` when app code needs typed action or game values.
+
+## Actions
+
+### Create
+
+Use `create` when the first player opens a PvP Coinflip match.
+
+Required: `owner`, `coinType`, `stake`, `side`.
+
+Optional: `isPrivate`, `metadata`, `gasBudget`, `useGasCoin`.
+
+```ts
+const tx = client.sugar.tx.pvpCoinflip.createGame({
+	owner,
+	coinType: '0x2::sui::SUI',
+	stake: 1_000_000_000n,
+	side: 'tails',
+	isPrivate: true,
+});
+```
+
+Preserve the creator-selected side and privacy flag exactly.
+
+### Join
+
+Use `join` when a second player accepts an unresolved match.
+
+Required: `owner`, `coinType`, `gameId`.
+
+Optional: `metadata`, `gasBudget`, `useGasCoin`.
+
+```ts
+const tx = client.sugar.tx.pvpCoinflip.joinGame({
+	owner,
+	coinType: '0x2::sui::SUI',
+	gameId: '0xGAME',
+});
+```
+
+Join derives the stake from `gameId` and resolves the selected coin's `priceInfoObjectId` from SDK coin metadata. Do not pass stake, side, or custom coin callbacks for join.
+
+### Cancel
+
+Use `cancel` when the creator cancels an unresolved match.
+
+Required: `owner`, `coinType`, `gameId`.
+
+Optional: `gasBudget`. Cancel does not build a bet coin or write metadata, so do not pass `metadata` or `useGasCoin`.
+
+```ts
+const tx = client.sugar.tx.pvpCoinflip.cancelGame({
+	owner,
+	coinType: '0x2::sui::SUI',
+	gameId: '0xGAME',
+});
+```
+
+Keep cancellation tied to the on-chain `gameId`; do not reuse create or join payload shapes.
+
+## Lobby and object reads
+
+`getPvPCoinflipGames()` lists unresolved matches by reading the PvP registry for the active network and loading referenced game objects with `client.core.getObjects()`.
+
+- Registry membership is the live pending-state signal.
+- Joined and resolved games are removed from the registry and their live `Game` objects are deleted.
+- Per-object fetch or parse failures are skipped by default so a stale registry entry does not reject the whole lookup.
+- Pass `throwOnError: true` when the caller wants strict rejection.
+- Forward supported dynamic-field options such as `limit`, `cursor`, or `signal`.
+- Calling without options uses `DEFAULT_QUERY_LIMIT` (`50`); passing an options object replaces that default, so include the limit explicitly when adding other options.
+- Each entry includes `coin_type`, derived from the Move object type. Use that coin type when joining or canceling the selected match.
+- The method returns an array for one registry page, without a next-page cursor or `hasNextPage`. Do not invent a `games.cursor` property or treat an empty parsed array as proof that no further registry entries exist; per-object failures can remove entries from the result.
+
+```ts
+import { DEFAULT_QUERY_LIMIT } from '@sugarcasino/sdk/utils';
+
+const games = await client.sugar.getPvPCoinflipGames({
+	limit: DEFAULT_QUERY_LIMIT,
+});
+for (const game of games) {
+	console.log(game.id, game.coin_type);
+}
+```
+
+```ts
+const game = await client.sugar.bcs.PvPCoinflipGame.get({
+	client,
+	objectId: '0xGAME',
+});
+```
+
+## Event decoding
+
+Use:
+
+- `client.sugar.bcs.PvPCoinflipGameCreatedEvent`
+- `client.sugar.bcs.PvPCoinflipGameResolvedEvent`
+- `client.sugar.bcs.PvPCoinflipGameCancelledEvent`
+
+When a flow also decodes `BetResultEvent`, use [event parsing](../../event-parsing/references/events.md) for the `parseSugarEvent`, `parseGameEvent`, and `parseGameDetails` pattern.
+
+## Gotchas
+
+- Do not model PvP Coinflip with `createGameBet`.
+- Do not pass explicit coin object ids; let the SDK build the coin input from balance.
+- For partner attribution, follow [referrals](../../referrals/SKILL.md); do not set `metadata.partner` or `metadata.referrer`.
+- Treat lobby ids, game ids, and privacy flags as explicit product state.
+- After join and resolution, inspect emitted events instead of expecting the `Game` object to remain on-chain.
+- Use `client.sugar.getConfig().coins` when the UI needs supported coin metadata.
+- Use the root-exported `SugarCoin` type when app code needs typed supported coin keys.
+
+## Implementation checklist
+
+1. Confirm whether the feature is create, join, or cancel.
+2. Wire the flow to the matching `pvpCoinflip.createGame`, `joinGame`, or `cancelGame` builder.
+3. For join or cancel, pass `gameId` and `coinType`.
+4. Read unresolved lobby state with `client.sugar.getPvPCoinflipGames()`.
+5. Fetch a specific live match with `client.sugar.bcs.PvPCoinflipGame.get({ client, objectId: gameId })` when needed.
+6. Parse emitted PvP events with generated BCS helpers.
+7. Parse `BetResultEvent.game_details` with [event parsing](../../event-parsing/references/events.md) when displaying bet result details.

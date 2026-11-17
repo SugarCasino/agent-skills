@@ -1,0 +1,29 @@
+{
+	"$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+	"notGrouped": "bottom",
+	"groupings": [
+		{
+			"title": "Sugar SDK",
+			"description": "Skills for integrating @sugarcasino/sdk and building referral, NFT V1, SweetHouse, event parsing, standard game, or PvP game flows in applications.",
+			"skills": [
+				"installation",
+				"event-parsing",
+				"referrals",
+				"sugar-nft",
+				"sweethouse",
+				"create-standard-games",
+				"create-pvp-games"
+			]
+		},
+		{
+			"title": "Sugar Suifrens",
+			"description": "Skills for character rendering, accessories, animation playback and scripted duels.",
+			"skills": ["suifrens-display", "suifrens-animation"]
+		},
+		{
+			"title": "Sugar MCP",
+			"description": "Skills for configuring and operating the @sugarcasino/mcp server, MCP App, wallet tools, and plugin bundle.",
+			"skills": ["sugar-mcp"]
+		}
+	]
+}

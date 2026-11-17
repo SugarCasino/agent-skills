@@ -1,0 +1,70 @@
+{
+	"skill_name": "installation",
+	"source_constraint": "Expected outputs are grounded in the Sugar SDK public API, the installed @sugarcasino/sdk package surface, and current Mysten Sui TypeScript client patterns.",
+	"evals": [
+		{
+			"id": "installation-grpc-extension-setup",
+			"prompt": "Set up @sugarcasino/sdk in my Node app using the current Sui TypeScript SDK. I need a testnet client and a coinflip transaction serialized to base64 for the wallet.",
+			"expected_output": "Shows SuiGrpcClient from @mysten/sui/grpc extended with sugar(), builds a coinflip transaction through client.sugar.tx.createGameBet({ game: 'coinflip', ... }), and serializes it with client.sugar.serializeTransactionToBase64({ transaction }).",
+			"sources": [
+				"https://github.com/SugarCasino/agent-skills/tree/main/skills/installation",
+				"https://sdk.mystenlabs.com/sui"
+			],
+			"assertions": [
+				"Imports sugar from @sugarcasino/sdk",
+				"Imports SuiGrpcClient from @mysten/sui/grpc",
+				"Constructs the client with both baseUrl and network",
+				"Extends the client with sugar()",
+				"Uses client.sugar.tx.createGameBet with game: 'coinflip' for the bet",
+				"Uses client.sugar.serializeTransactionToBase64 with a transaction option for serialization",
+				"Does not import a standalone coinflip builder from @sugarcasino/sdk"
+			]
+		},
+		{
+			"id": "installation-coin-price-info-override",
+			"prompt": "Our deployed USDC price-info object changed before an SDK release. Show the supported sugar() config override without copying internal builders.",
+			"expected_output": "Overrides config.coins.usdc with coinType, decimals, and priceInfoObjectId without copying internal builders.",
+			"sources": ["https://github.com/SugarCasino/agent-skills/tree/main/skills/installation"],
+			"assertions": [
+				"Uses sugar({ config: { coins: { usdc: ... } } })",
+				"Places priceInfoObjectId inside the usdc coin metadata",
+				"Does not copy or import internal transaction builders"
+			]
+		},
+		{
+			"id": "installation-guard-raw-move-numerics",
+			"prompt": "My app receives an unknown generated BCS field that might be a Sugar Move Float or i64. How should I safely convert it without copying the SDK's struct-shape checks?",
+			"expected_output": "Routes the raw generated numeric parsing question to the event-parsing skill, while noting that getGameParameters() already returns float fields as JavaScript numbers.",
+			"sources": ["https://github.com/SugarCasino/agent-skills/tree/main/skills/installation"],
+			"assertions": [
+				"Routes detailed raw generated numeric parsing to event-parsing",
+				"States that getGameParameters already normalizes Move float fields",
+				"Does not copy a local structural type guard"
+			]
+		},
+		{
+			"id": "installation-currency-and-runtime",
+			"prompt": "Set up the v2 SDK in a new Node application. Can I pass toBigInt(1.5) as the stake for 1.5 SUI?",
+			"expected_output": "Uses the beta SDK with Sui 2 and BCS 2 in an ESM app on supported Node, explains that toBigInt truncates rather than scaling currency, and uses 1500000000n for 1.5 SUI.",
+			"sources": ["https://github.com/SugarCasino/agent-skills/tree/main/skills/installation"],
+			"assertions": [
+				"Specifies Node.js ^24.0.0 || ^26.0.0 and ESM",
+				"Uses @mysten/sui@2 and @mysten/bcs@2",
+				"Explains toBigInt(1.5) becomes 1n, not 1.5 SUI in base units",
+				"Uses 1_500_000_000n or equivalent exact base units for 1.5 SUI"
+			]
+		},
+		{
+			"id": "installation-strict-optional-options",
+			"prompt": "With exactOptionalPropertyTypes enabled, can I forward partner: undefined and cacheTtl: undefined into sugar(), and betCount: undefined into createGameBet? Does that mean config.coins.usdc.decimals can also be undefined?",
+			"expected_output": "SDK-owned optional extension and transaction values accept explicit undefined and use normal defaults, while nested config overrides must provide valid concrete values or omit fields.",
+			"sources": ["https://github.com/SugarCasino/agent-skills/tree/main/skills/installation"],
+			"assertions": [
+				"Allows explicit undefined for partner, cacheTtl and betCount",
+				"Explains undefined has the same behavior as omitting these SDK-owned options",
+				"Keeps nested config override values concrete or omits the field",
+				"Does not disable strict TypeScript checks or introduce casts to bypass them"
+			]
+		}
+	]
+}

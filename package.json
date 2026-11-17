@@ -1,0 +1,42 @@
+{
+	"name": "@sugarcasino/agent-skills",
+	"private": true,
+	"license": "MIT",
+	"author": "Sugar Casino",
+	"type": "module",
+	"scripts": {
+		"prepare": "husky",
+		"validate": "node scripts/validate-skills.mjs",
+		"eval": "node scripts/run-evals.mjs",
+		"eval:changed": "node scripts/run-evals.mjs --changed-only",
+		"oxlint": "oxlint .",
+		"oxlint:fix": "oxlint . --fix",
+		"oxfmt": "oxfmt . --check",
+		"oxfmt:fix": "oxfmt .",
+		"lint": "pnpm run oxlint && pnpm run oxfmt",
+		"lint:fix": "pnpm run oxlint:fix && pnpm run oxfmt:fix"
+	},
+	"dependencies": {
+		"@anthropic-ai/sdk": "^1.6.0",
+		"glob": "^14.0.4"
+	},
+	"devDependencies": {
+		"husky": "^9.1.7",
+		"lint-staged": "^17.6.0",
+		"oxfmt": "^0.77.0",
+		"oxlint": "^1.92.0"
+	},
+	"devEngines": {
+		"packageManager": {
+			"name": "pnpm",
+			"version": "12.18.0",
+			"onFail": "warn"
+		},
+		"runtime": {
+			"name": "node",
+			"version": "^24.20.0 || ^26.5.0",
+			"onFail": "warn"
+		}
+	},
+	"packageManager": "pnpm@12.18.0"
+}

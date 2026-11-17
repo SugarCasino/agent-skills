@@ -1,0 +1,93 @@
+# SweetHouse public pool specification
+
+Use this specification for SDK application code that deposits into SweetHouse, creates redeem requests from staked coins, or claims a redeem request created by the signer after the delay.
+
+## Deposit
+
+Deposit supported coins into the SweetHouse public pool and receive staked coins back to `owner`:
+
+```ts
+const tx = client.sugar.tx.sweetHouse.deposit({
+	owner,
+	coinType: '0x2::sui::SUI',
+	amount: 1_000_000_000n,
+});
+```
+
+Required:
+
+- `owner`
+- `coinType`
+- `amount`
+
+Optional:
+
+- `gasBudget`
+- `useGasCoin`
+
+Omit `useGasCoin` to preserve Mysten's default native SUI coin intent behavior; set it only when the application needs to override that behavior.
+
+## Redeem request
+
+Create a redeem request by spending staked coins for the selected pool:
+
+```ts
+const tx = client.sugar.tx.sweetHouse.redeemRequest({
+	owner,
+	coinType: '0x2::sui::SUI',
+	amount: 1_000_000_000n,
+});
+```
+
+Required:
+
+- `owner`
+- `coinType`
+- `amount`
+
+Optional:
+
+- `gasBudget`
+
+The redeem request builder sources `StakedCoin<coinType>`, not the underlying coin. It does not accept `useGasCoin` or explicit coin object ids.
+
+## Claim own redeem request after delay
+
+After the on-chain delay has passed, claim your own redeem request:
+
+```ts
+const tx = client.sugar.tx.sweetHouse.claimOwnRedeemRequestAfterDelay({
+	owner,
+	coinType: '0x2::sui::SUI',
+	requestId,
+});
+```
+
+Required:
+
+- `owner`
+- `coinType`
+- `requestId`
+
+Optional:
+
+- `gasBudget`
+
+The signer must be the address that created the redeem request. `requestId` is the redeem request object id, usually obtained from transaction effects or `RedeemRequestCreatedEvent`.
+
+## Events
+
+Use the generated BCS helper for SweetHouse redeem events:
+
+```ts
+const event = client.sugar.bcs.RedeemRequestCreatedEvent.parse(suiEvent.bcs);
+```
+
+`parseSugarEvent` is for supported game events, not SweetHouse redeem events.
+
+## Boundaries
+
+- SweetHouse flows use `amount`, not `stake`, because they are pool liquidity transactions rather than game bets.
+- Use base-unit `bigint` amounts once values leave the UI layer.
+- Derive coin types and decimals from `client.sugar.getConfig().coins`.
+- Derive `objectIds.sweetHouse` from SDK config. Do not hard-code network-specific SweetHouse ids in app code.

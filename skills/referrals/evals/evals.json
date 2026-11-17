@@ -1,0 +1,32 @@
+{
+	"skill_name": "referrals",
+	"source_constraint": "Expected outputs are grounded in the public @sugarcasino/sdk referral extension surface.",
+	"evals": [
+		{
+			"id": "referrals-partner-attribution",
+			"prompt": "Our Sugar app needs partner attribution. Can I just add metadata.partner: 'my-affiliate' to every bet? Show the correct setup.",
+			"expected_output": "Explains partner attribution belongs in sugar({ partner }) at extension registration time, partner must be a wallet address, and metadata.partner/referrer should not be set.",
+			"sources": ["https://github.com/SugarCasino/agent-skills/tree/main/skills/referrals"],
+			"assertions": [
+				"States that partner is configured through sugar({ partner: '<wallet-address>' })",
+				"States that partner must be a wallet address, not a slug or label",
+				"Warns not to set metadata.partner",
+				"Warns not to set metadata.referrer",
+				"Shows client extension setup with partner configured once"
+			]
+		},
+		{
+			"id": "referrals-commission-claim",
+			"prompt": "In my @sugarcasino/sdk app, how do I check a referrer's SUI commission and build an unsigned claim transaction without hand-writing a Move call?",
+			"expected_output": "Uses client.sugar.view.referral.getCommission({ owner, coinType }) for the simulated claimable amount and client.sugar.tx.referral.claimCommission({ owner, coinType }) for the unsigned transaction. It explains that the read returns 0n when it cannot be claimed or simulated and the claim transfers the resulting coin to owner.",
+			"sources": ["https://github.com/SugarCasino/agent-skills/tree/main/skills/referrals"],
+			"assertions": [
+				"Uses client.sugar.view.referral.getCommission",
+				"Uses client.sugar.tx.referral.claimCommission",
+				"Passes owner and coinType",
+				"Does not hand-write a referral Move target",
+				"States that the claim transaction is unsigned until the app submits it"
+			]
+		}
+	]
+}
