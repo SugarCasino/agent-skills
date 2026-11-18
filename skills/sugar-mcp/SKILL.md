@@ -1,6 +1,6 @@
 ---
 name: sugar-mcp
-description: Install, configure, operate, or troubleshoot the @sugar/mcp server, bundled MCP App, or plugin bundle for Sugar. Use when adding direct MCP configuration or installing the Codex, Claude Code, or Cursor plugin; reading config, live game metadata, wallet balances, coin objects, NFT V1 catalog/ownership, or referral rewards; building standard, PvP, referral-claim, NFT V1 mint, or SweetHouse transaction plans including Keno and Soccer; using read-only/build/dry-run/execute modes; pairing browser wallets; managing local session wallets; handling SuiNS owner inputs; or explaining MCP safety boundaries.
+description: Install, configure, operate, or troubleshoot the @sugarcasino/mcp server, bundled MCP App, or plugin bundle for Sugar. Use when adding direct MCP configuration or installing the Codex, Claude Code, or Cursor plugin; reading config, live game metadata, wallet balances, coin objects, NFT V1 catalog/ownership, or referral rewards; building standard, PvP, referral-claim, NFT V1 mint, or SweetHouse transaction plans including Keno and Soccer; using read-only/build/dry-run/execute modes; pairing browser wallets; managing local session wallets; handling SuiNS owner inputs; or explaining MCP safety boundaries.
 license: MIT
 metadata:
   author: sugar
@@ -15,18 +15,18 @@ metadata:
 
 # Sugar MCP
 
-Use this skill for `@sugar/mcp` operation. If the user is writing application code that imports `@sugar/sdk`, use `installation`, `create-standard-games`, `create-pvp-games`, [sweethouse](../sweethouse/SKILL.md), [sugar-nft](../sugar-nft/SKILL.md), or [referrals](../referrals/SKILL.md) instead.
+Use this skill for `@sugarcasino/mcp` operation. If the user is writing application code that imports `@sugarcasino/sdk`, use `installation`, `create-standard-games`, `create-pvp-games`, [sweethouse](../sweethouse/SKILL.md), [sugar-nft](../sugar-nft/SKILL.md), or [referrals](../referrals/SKILL.md) instead.
 
-The MCP server uses `@sugar/sdk` to read config, game metadata, balances, coin objects, NFTs, and referral rewards. It can build or dry-run unsigned transactions. Execution requires either explicit approval from a paired wallet or a local session wallet created by the user.
+The MCP server uses `@sugarcasino/sdk` to read config, game metadata, balances, coin objects, NFTs, and referral rewards. It can build or dry-run unsigned transactions. Execution requires either explicit approval from a paired wallet or a local session wallet created by the user.
 
 ## Install or add the plugin
 
-Check that the requested npm version or dist-tag is published. The MCP features documented here will be available in the next beta release. Once published, use `@sugar/mcp@beta` or a published exact version for a beta release, including in `add-mcp` and manual stdio configuration. The `@latest` examples below require a stable release. A public source repository does not establish npm availability.
+Check that the requested npm version or dist-tag is published. The MCP features documented here will be available in the next beta release. Once published, use `@sugarcasino/mcp@beta` or a published exact version for a beta release, including in `add-mcp` and manual stdio configuration. The `@latest` examples below require a stable release. A public source repository does not establish npm availability.
 
-Use Node.js `^24.0.0 || ^26.0.0` with `@sugar/mcp@latest`. To add the server to detected coding agents:
+Use Node.js `^24.0.0 || ^26.0.0` with `@sugarcasino/mcp@latest`. To add the server to detected coding agents:
 
 ```bash
-npx add-mcp @sugar/mcp@latest --name sugar
+npx add-mcp @sugarcasino/mcp@latest --name sugar
 ```
 
 Use manual stdio configuration only when the user needs to configure one MCP client explicitly or their environment does not support `add-mcp`:
@@ -36,7 +36,7 @@ Use manual stdio configuration only when the user needs to configure one MCP cli
 	"mcpServers": {
 		"sugar": {
 			"command": "npx",
-			"args": ["-y", "@sugar/mcp@latest"]
+			"args": ["-y", "@sugarcasino/mcp@latest"]
 		}
 	}
 }
@@ -44,7 +44,7 @@ Use manual stdio configuration only when the user needs to configure one MCP cli
 
 After a config change, ask the user to restart or reload the MCP client to start the server.
 
-Use the plugin bundle when the user wants marketplace installation or the bundled client integration. The package ships manifests for Codex, Claude Code, and Cursor; those manifests register the version-pinned `@sugar/mcp` stdio server automatically.
+Use the plugin bundle when the user wants marketplace installation or the bundled client integration. The package ships manifests for Codex, Claude Code, and Cursor; those manifests register the version-pinned `@sugarcasino/mcp` stdio server automatically.
 
 For Codex, add the public Sugar marketplace from GitHub:
 

@@ -15,7 +15,7 @@ metadata:
 
 # Sugar Referrals
 
-Use this skill for application code that imports `@sugar/sdk`. For referral reads or unsigned claims through `@sugar/mcp`, use `sugar-mcp` instead.
+Use this skill for application code that imports `@sugarcasino/sdk`. For referral reads or unsigned claims through `@sugarcasino/mcp`, use `sugar-mcp` instead.
 
 Use the public SDK extension for referral calls. It handles the Move calls and applies partner attribution without duplicating it in each game's metadata.
 
@@ -25,7 +25,7 @@ Configure attribution once when registering the client extension:
 
 ```ts
 import { SuiGrpcClient } from '@mysten/sui/grpc';
-import { sugar } from '@sugar/sdk';
+import { sugar } from '@sugarcasino/sdk';
 
 const client = new SuiGrpcClient({ baseUrl, network }).$extend(
 	sugar({ partner: '0xpartner_wallet_address' }),

@@ -1,6 +1,6 @@
 ---
 name: create-standard-games
-description: Build, scaffold, review, or fix standard single-player Sugar game flows using @sugar/sdk. Use when creating coinflip, keno, limbo, plinko, range, soccer, or wheel bet transactions; reading live stake limits, RTP, or game configurations; mapping UI inputs to client.sugar.tx.createGameBet; handling stake/cashStake/betCount/metadata; decoding BetResultEvent; or correcting AI-generated code that manually selects coins, invents game builders, or misroutes standard games through MCP, SweetHouse, or PvP APIs.
+description: Build, scaffold, review, or fix standard single-player Sugar game flows using @sugarcasino/sdk. Use when creating coinflip, keno, limbo, plinko, range, soccer, or wheel bet transactions; reading live stake limits, RTP, or game configurations; mapping UI inputs to client.sugar.tx.createGameBet; handling stake/cashStake/betCount/metadata; decoding BetResultEvent; or correcting AI-generated code that manually selects coins, invents game builders, or misroutes standard games through MCP, SweetHouse, or PvP APIs.
 license: MIT
 metadata:
   author: sugar
@@ -15,7 +15,7 @@ metadata:
 
 # Create standard Sugar games
 
-Use this skill for application code that imports `@sugar/sdk` and builds standard single-player game transactions. If the app setup is missing, use `installation` first. If the user is using `@sugar/mcp` tools, use `sugar-mcp` instead.
+Use this skill for application code that imports `@sugarcasino/sdk` and builds standard single-player game transactions. If the app setup is missing, use `installation` first. If the user is using `@sugarcasino/mcp` tools, use `sugar-mcp` instead.
 
 Use the SDK public API. Do not invent transaction builders or hand-copy Move call internals into app code.
 
@@ -30,10 +30,10 @@ Use the SDK public API. Do not invent transaction builders or hand-copy Move cal
 
 ## Imports and types
 
-Use game types from `@sugar/sdk/games`:
+Use game types from `@sugarcasino/sdk/games`:
 
 ```ts
-import { GAMES, type CoinSide, type Game, type StandardGame } from '@sugar/sdk/games';
+import { GAMES, type CoinSide, type Game, type StandardGame } from '@sugarcasino/sdk/games';
 ```
 
 Do not redefine game id unions unless the local app already has a stricter UI type.

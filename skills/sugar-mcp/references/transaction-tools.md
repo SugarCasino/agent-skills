@@ -1,6 +1,6 @@
 # MCP transaction tools specification
 
-Use this specification for `@sugar/mcp` transaction routing, modes, common inputs, and game-specific fields.
+Use this specification for `@sugarcasino/mcp` transaction routing, modes, common inputs, and game-specific fields.
 
 ## Modes
 
@@ -21,7 +21,7 @@ App-capable clients may render the bundled Sugar Transaction Inspector UI. The A
 
 - `network` defaults to `testnet`; only `testnet` and `mainnet` are supported.
 - `providerUrl` can override the Sui gRPC endpoint.
-- `config` accepts SDK-style `packageIds`, `objectIds`, and coin-metadata overrides. Game, referral, and core packages currently use `@suigar/*` MVR names by default (independent of the npm `@sugar/*` scope), and accept explicit overrides through `packageIds`. The `nftV1` package is configured per network. The MCP schema omits `config.packageIds.keno`, even though the SDK supports that override; do not pass it to MCP tools. Put a custom price-info object id beside its coin as `coins.sui.priceInfoObjectId` or `coins.usdc.priceInfoObjectId`; singleton ids such as `sweetHouse` and `nftV1Factory` belong in `objectIds`.
+- `config` accepts SDK-style `packageIds`, `objectIds`, and coin-metadata overrides. Game, referral, and core packages currently use `@suigar/*` MVR names by default (independent of the npm `@sugarcasino/*` scope), and accept explicit overrides through `packageIds`. The `nftV1` package is configured per network. The MCP schema omits `config.packageIds.keno`, even though the SDK supports that override; do not pass it to MCP tools. Put a custom price-info object id beside its coin as `coins.sui.priceInfoObjectId` or `coins.usdc.priceInfoObjectId`; singleton ids such as `sweetHouse` and `nftV1Factory` belong in `objectIds`.
 - `partner` is a top-level partner wallet address forwarded through `sugar({ partner })`.
 - Invalid package/object ids, coin metadata (`coinType`, `decimals`, or `priceInfoObjectId`), missing price-info object ids, and invalid top-level partner values throw `TypeError`. Correct the affected override or partner before retrying.
 - `owner` accepts a Sui address, SuiNS name, or SuiNS subname in build, dry-run, paired-wallet execute, NFT, wallet, SweetHouse, and referral reads.

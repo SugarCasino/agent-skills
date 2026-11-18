@@ -1,6 +1,6 @@
 ---
 name: sweethouse
-description: Build, scaffold, review, or fix Sugar SweetHouse public pool flows using @sugar/sdk. Use when depositing into SweetHouse, minting staked coins, creating redeem requests from staked coins, claiming a delayed own redeem request, decoding SweetHouse redeem events, or keeping SweetHouse liquidity flows separate from standard game, PvP, referral, NFT, or MCP APIs.
+description: Build, scaffold, review, or fix Sugar SweetHouse public pool flows using @sugarcasino/sdk. Use when depositing into SweetHouse, minting staked coins, creating redeem requests from staked coins, claiming a delayed own redeem request, decoding SweetHouse redeem events, or keeping SweetHouse liquidity flows separate from standard game, PvP, referral, NFT, or MCP APIs.
 license: MIT
 metadata:
   author: sugar
@@ -15,7 +15,7 @@ metadata:
 
 # Sugar SweetHouse
 
-Use this skill for application code that imports `@sugar/sdk` and builds SweetHouse public pool transactions. If the app has not configured the SDK client yet, use `installation` first. If the user is using `@sugar/mcp` tools, use `sugar-mcp` instead.
+Use this skill for application code that imports `@sugarcasino/sdk` and builds SweetHouse public pool transactions. If the app has not configured the SDK client yet, use `installation` first. If the user is using `@sugarcasino/mcp` tools, use `sugar-mcp` instead.
 
 Use `client.sugar.tx.sweetHouse`. Do not hand-write `core::sweethouse` Move calls, hard-code SweetHouse object ids, or route deposits and redeem requests through game bet builders.
 

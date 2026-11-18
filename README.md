@@ -28,7 +28,7 @@ npx skills add SugarCasino/agent-skills
 
 ### installation
 
-Install `@sugar/sdk` and connect it to a Sui client with `sugar()`. Covers configuration, transaction serialization, and public exports.
+Install `@sugarcasino/sdk` and connect it to a Sui client with `sugar()`. Covers configuration, transaction serialization, and public exports.
 
 Use when:
 
@@ -51,7 +51,7 @@ Use when:
 
 ### referrals
 
-Configure partner attribution and claim referral rewards through `@sugar/sdk`.
+Configure partner attribution and claim referral rewards through `@sugarcasino/sdk`.
 
 Use when:
 
@@ -74,7 +74,7 @@ Use when:
 
 ### sweethouse
 
-Build SweetHouse public pool transactions with `@sugar/sdk`.
+Build SweetHouse public pool transactions with `@sugarcasino/sdk`.
 
 Use when:
 
@@ -86,7 +86,7 @@ Use when:
 
 ### create-standard-games
 
-Build standard single-player Sugar game transactions with `@sugar/sdk`.
+Build standard single-player Sugar game transactions with `@sugarcasino/sdk`.
 
 Use when:
 
@@ -97,7 +97,7 @@ Use when:
 
 ### create-pvp-games
 
-Create PvP game flows with `@sugar/sdk`, starting with PvP Coinflip. Each supported game has its own specification.
+Create PvP game flows with `@sugarcasino/sdk`, starting with PvP Coinflip. Each supported game has its own specification.
 
 Use when:
 
@@ -108,7 +108,7 @@ Use when:
 
 ### sugar-mcp
 
-Set up and use the `@sugar/mcp` server and bundled MCP App, with plugin installation for Codex, Claude Code, and Cursor.
+Set up and use the `@sugarcasino/mcp` server and bundled MCP App, with plugin installation for Codex, Claude Code, and Cursor.
 
 Use when:
 
@@ -201,7 +201,7 @@ Add Suifrens animation playback and a scripted duel
 
 ## Package releases and compatibility
 
-The public npm packages are `@sugar/sdk`, `@sugar/mcp`, and `@sugar/suifrens-display-system`. This repository distributes skills through the skills CLI; its private package manifest is development tooling and is not published to npm.
+The public npm packages are `@sugarcasino/sdk`, `@sugarcasino/mcp`, and `@sugarcasino/suifrens-display-system`. This repository distributes skills through the skills CLI; its private package manifest is development tooling and is not published to npm.
 
 The SDK workspace has been merged into [Sugar TypeScript SDKs](https://github.com/SugarCasino/ts-sdks). The APIs documented by these skills will be available in the next beta release. Before installing, check the package's published versions and dist-tags. Use a published exact version or `@beta` for a beta release; use `@latest` only once a stable release is available. Keep an application's existing version pin unless an upgrade is requested.
 

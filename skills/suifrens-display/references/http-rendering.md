@@ -9,7 +9,7 @@ From the ts-sdks repository root, use its Node.js and pnpm versions:
 ```bash
 pnpm install
 pnpm --dir packages/suifrens-display-system run build
-pnpm --filter @sugar/suifrens-fastify dev --network testnet
+pnpm --filter @sugarcasino/suifrens-fastify dev --network testnet
 ```
 
 The server listens on port 3000. Reuse a running instance if it already has the required configuration. Only `mainnet` and `testnet` are supported; omitting `--network` selects mainnet. Watch restarts preserve the network choice. No wallet, private key, database or `.env` is needed. Suifren reads require access to the public Sui fullnode over gRPC.
