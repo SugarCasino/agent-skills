@@ -1,6 +1,6 @@
 # Custom sequences and scripted duels
 
-Import `AnimationPresetName` from `/types` to validate built-in core and battle preset names with `satisfies AnimationPresetName`. The union follows the preset catalogues; lookup APIs still accept dynamic strings and return no sequence for unknown names.
+Import `AnimationPresetName` from `/types` to validate built-in core and battle preset names with `satisfies AnimationPresetName`. The union follows every registered preset catalogue; lookup APIs still accept dynamic strings and return no sequence for unknown names. Renderers play core presets immediately and load each deferred catalogue on first use. Requests share that catalogue load, and a failed load can be retried independently. Synchronous `/animation` helpers use the full catalogue.
 
 ## Custom part animation
 

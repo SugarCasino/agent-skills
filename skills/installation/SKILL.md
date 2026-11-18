@@ -49,7 +49,7 @@ import { GAMES, type PvPGame, type StandardGame } from '@sugar/sdk/games';
 import { parseCoinType, toBigInt, toU8, toU16, toU32 } from '@sugar/sdk/utils';
 ```
 
-The package root exposes `sugar`, `SugarClient`, `SUPPORTED_SUI_NETWORKS`, `SugarCoin`, and `SugarNetwork`. Game ids and game-specific option types live in `@sugar/sdk/games`. Parser and numeric helpers live in `@sugar/sdk/utils`.
+The package root exposes `sugar`, `SugarClient`, `SUGAR_COINS`, `SUPPORTED_SUI_NETWORKS`, `SugarCoin`, and `SugarNetwork`. `SUGAR_COINS` is the readonly list of coin keys (`sui`, `usdc`); `SugarCoin` derives from it. Game ids and game-specific option types live in `@sugar/sdk/games`, alongside `COIN_SIDES` (`heads`, `tails`) and `PVP_COINFLIP_ACTIONS` (`create`, `join`, `cancel`). Reuse these lists in selectors and validation. Parser and numeric helpers live in `@sugar/sdk/utils`.
 
 For a coin selector, read keys and metadata from `client.sugar.getConfig().coins`.
 
