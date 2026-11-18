@@ -1,6 +1,6 @@
 ---
 name: suifrens-animation
-description: Add Suifrens animation playback, custom part sequences, battle sprites, health bars, and scripted duels using @sugarcasino/suifrens-display-system. Use for animation configuration, iterations, play state, triggers, timing helpers, or useDuelScript attack and victory steps. Static portraits, accessories and gestures belong to suifrens-display.
+description: Add Suifrens animation playback, custom part sequences, battle sprites, health bars, and scripted duels using @sugarcasino/suifrens-display-system. Use for animation configuration, iterations, play state, triggers, ground shadows, timing helpers, or useDuelScript attack and victory steps. Static portraits, accessories and gestures belong to suifrens-display.
 license: MIT
 metadata:
   author: sugar
@@ -41,7 +41,9 @@ Import `AnimationConfig`, `AnimationSequence`, `PlaybackOptions` and other publi
 
 Read preset timing with `getPresetDurationMs(preset, playback)` to avoid copying duration constants. Validate unknown presets: `getPresetSequence` can return `undefined` and the duration helper returns `null` for unknown presets or infinite playback. Do not promise a preset based only on a natural-language action name.
 
-For custom sequences or duels, read [references/sequences-and-duels.md](references/sequences-and-duels.md).
+For custom sequences, ground shadow behavior, or duels, read [references/sequences-and-duels.md](references/sequences-and-duels.md).
+
+Storybook labels the three death previews `(Loop)` and sets `playback.iterations` to `'infinite'` for those previews. For a single defeat in a game, use `animation={{ preset: 'death', holdOnComplete: true }}` to play once and keep the landing pose. The other variants are `death2` and `death3`.
 
 ## Verification
 
