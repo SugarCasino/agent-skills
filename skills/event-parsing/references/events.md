@@ -18,7 +18,7 @@ import {
 
 ## Game events
 
-Use events from the Sui core API (`SuiClientTypes.Event`), with `eventType`, `module`, and `bcs: Uint8Array`. The parser signatures accept `SuiClientTypes.Event`. At runtime, `parseGameEvent` reads only `eventType` and `module`, while `parseSugarEvent` also needs BCS bytes to decode a payload. Pass the full typed event in TypeScript; do not cast a minimal envelope to bypass the signature.
+Use events from the Sui core API (`SuiClientTypes.Event`) or minimal event envelopes. `parseGameEvent` requires only `eventType` and `module`; `parseSugarEvent` accepts the same fields plus optional `bcs: Uint8Array`, and returns `null` when the bytes are absent. Unsupported game identifiers return `null` before decoding.
 
 Prefer `parseSugarEvent(event)` when the raw Sui event includes BCS bytes. It resolves the supported Sugar `game`, decodes the event payload, and includes decoded `gameDetails` for `BetResultEvent`.
 
@@ -51,7 +51,7 @@ if (parsed?.event === 'BetResultEvent') {
 
 `parseGameEvent(event)` returns `{ game, event }`. Do not use the older `gameId` or `eventName` field names. `parseGameDetails({ game, gameDetails })` decodes known detail keys and preserves on-chain key names.
 
-Generic `GameDetails<Game>` fields may be unavailable to TypeScript when the mapped type does not distribute over the game union. Narrow the outer event with `'gameDetails' in decoded`, confirm the game, and call `parseGameDetails` with a literal identifier for game-specific fields:
+`GameDetails<Game>` is a union of the supported games' detail shapes. Use `in` to check keys that are not shared by every game. For a precise game-specific result, narrow the outer event with `'gameDetails' in decoded`, confirm the game, and call `parseGameDetails` with a literal identifier for game-specific fields:
 
 ```ts
 const decoded = parseSugarEvent(event);
