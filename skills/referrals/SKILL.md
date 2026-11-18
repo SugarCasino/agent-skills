@@ -4,7 +4,7 @@ description: Configure Sugar SDK partner attribution and referral rewards in a S
 license: MIT
 metadata:
   author: sugar
-  version: '1.1.1'
+  version: '1.0.0'
   short-description: Configure Sugar referrals
   tags:
     - sugar
@@ -15,9 +15,9 @@ metadata:
 
 # Sugar Referrals
 
-Use this skill for application code that imports `@sugarcasino/sdk`. For referral reads or unsigned claims through `@sugarcasino/mcp`, use `sugar-mcp` instead.
+Use this skill for application code that imports `@sugar/sdk`. For referral reads or unsigned claims through `@sugar/mcp`, use `sugar-mcp` instead.
 
-Use the public SDK extension API. Do not hand-write referral Move calls or duplicate referral data in per-game metadata.
+Use the public SDK extension for referral calls. It handles the Move calls and applies partner attribution without duplicating it in each game's metadata.
 
 ## Partner attribution
 
@@ -25,7 +25,7 @@ Configure attribution once when registering the client extension:
 
 ```ts
 import { SuiGrpcClient } from '@mysten/sui/grpc';
-import { sugar } from '@sugarcasino/sdk';
+import { sugar } from '@sugar/sdk';
 
 const client = new SuiGrpcClient({ baseUrl, network }).$extend(
 	sugar({ partner: '0xpartner_wallet_address' }),
@@ -36,7 +36,7 @@ const client = new SuiGrpcClient({ baseUrl, network }).$extend(
 
 The SDK normalizes `partner` and throws `TypeError` for invalid addresses, blank strings, or non-string runtime values. `undefined` leaves attribution unset.
 
-Keep the configured partner stable for the lifetime of the client. If an application changes it per campaign or session, create or select the correctly configured client before building transactions.
+Keep the same partner for the lifetime of a client. If attribution changes by campaign or session, select or create a client with the new partner before building transactions.
 
 ## Referral rewards
 

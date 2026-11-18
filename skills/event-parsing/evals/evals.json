@@ -1,6 +1,6 @@
 {
 	"skill_name": "event-parsing",
-	"source_constraint": "Expected outputs are grounded in @sugarcasino/sdk public event parsing utilities, generated BCS helpers, and numeric conversion helpers.",
+	"source_constraint": "Expected outputs are grounded in @sugar/sdk public event parsing utilities, generated BCS helpers, and numeric conversion helpers.",
 	"evals": [
 		{
 			"id": "event-parsing-bet-result",
@@ -8,7 +8,7 @@
 			"expected_output": "Uses parseSugarEvent(event) for full decoded game events, or parseGameEvent(event), client.sugar.bcs.BetResultEvent.parse(event.bcs), parseGameDetails({ game, gameDetails: decoded.game_details }), and fromMoveFloat for manual staged decoding.",
 			"sources": ["https://github.com/SugarCasino/agent-skills/tree/main/skills/event-parsing"],
 			"assertions": [
-				"Uses parseSugarEvent or parseGameEvent from @sugarcasino/sdk/utils",
+				"Uses parseSugarEvent or parseGameEvent from @sugar/sdk/utils",
 				"Parses event.bcs with client.sugar.bcs.BetResultEvent.parse when showing manual staged decoding",
 				"Passes the parsed game into parseGameDetails",
 				"Mentions fromMoveFloat for generated Move float structs when showing manual staged decoding",
@@ -18,11 +18,11 @@
 		{
 			"id": "event-parsing-raw-move-numerics",
 			"prompt": "My app receives an unknown generated BCS field that might be a Sugar Move Float or i64. How should I safely convert it?",
-			"expected_output": "Imports isMoveFloat, isMoveI64, fromMoveFloat, and fromMoveI64 from @sugarcasino/sdk/utils; guards the unknown value with the matching predicate before converting it, and distinguishes this from getGameParameters(), which already normalizes Move float fields.",
+			"expected_output": "Imports isMoveFloat, isMoveI64, fromMoveFloat, and fromMoveI64 from @sugar/sdk/utils; guards the unknown value with the matching predicate before converting it, and distinguishes this from getGameParameters(), which already normalizes Move float fields.",
 			"sources": ["https://github.com/SugarCasino/agent-skills/tree/main/skills/event-parsing"],
 			"assertions": [
-				"Imports isMoveFloat and isMoveI64 from @sugarcasino/sdk/utils",
-				"Imports fromMoveFloat and fromMoveI64 from @sugarcasino/sdk/utils",
+				"Imports isMoveFloat and isMoveI64 from @sugar/sdk/utils",
+				"Imports fromMoveFloat and fromMoveI64 from @sugar/sdk/utils",
 				"Guards an unknown value with isMoveFloat before fromMoveFloat",
 				"Guards an unknown value with isMoveI64 before fromMoveI64",
 				"States that getGameParameters already normalizes Move float fields",

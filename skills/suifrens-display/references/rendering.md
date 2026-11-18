@@ -3,9 +3,9 @@
 ## Imports and attributes
 
 ```tsx
-import { SuiFrenImage } from '@sugarcasino/suifrens-display-system';
-import { SuiFrenImageInline } from '@sugarcasino/suifrens-display-system/image-inline';
-import type { CapyAttributes } from '@sugarcasino/suifrens-display-system/types';
+import { SuiFrenImage } from '@sugar/suifrens-display-system';
+import { SuiFrenImageInline } from '@sugar/suifrens-display-system/image-inline';
+import type { CapyAttributes } from '@sugar/suifrens-display-system/types';
 
 const attributes = {
 	mainColor: 'a17e52',
@@ -34,7 +34,7 @@ Use palette keys from `COLORS` in `/colors`, without a leading `#`, for `mainCol
 
 The root renderer uses cacheable external accessory SVGs. The `/image-inline` entry embeds catalogue artwork and is the choice for standalone SVG markup. Server-side static markup does not run animation effects.
 
-An explicit accessory `renderOptions.assetSrc` overrides ordinary catalogue artwork in both renderers. The inline renderer still references an explicit override directly: a remote URL is not made self-contained. Supply a self-contained SVG data URL if an export must work offline. Check built asset URLs in the actual consumer build rather than relying only on a sibling source alias.
+An explicit accessory `renderOptions.assetSrc` overrides ordinary catalogue artwork in both renderers. The inline renderer still references an explicit override directly: a remote URL is not made self-contained. Supply a self-contained SVG data URL if an export must work offline. Check asset URLs in the consumer's built app too; a sibling source alias can hide broken URLs.
 
 ## Accessories, kits and gestures
 
@@ -43,7 +43,7 @@ Pass catalogue entries or custom `SuiFrenAccessory` objects from `/types` with `
 Import `ACCESSORIES`, `VIP_CROWN_ACCESSORIES` and crown helpers from `/accessories`; import `buildRunnerAccessories`, `resolveRunnerKit`, `SOCCER_TEAM_KITS`, `resolveSoccerCountryCode`, and `resolveSoccerTeamKit` from `/kits`.
 
 ```tsx
-import { buildRunnerAccessories } from '@sugarcasino/suifrens-display-system/kits';
+import { buildRunnerAccessories } from '@sugar/suifrens-display-system/kits';
 
 const outfit = buildRunnerAccessories({ color: '#ec7da6', number: 3, mirrorBib: true });
 // Pass outfit as the image component's accessories array.

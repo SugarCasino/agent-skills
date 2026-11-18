@@ -87,7 +87,7 @@ const event = client.sugar.bcs.RedeemRequestCreatedEvent.parse(suiEvent.bcs);
 
 ## Boundaries
 
-- SweetHouse flows use `amount`, not `stake`, because they are pool liquidity transactions rather than game bets.
+- Pass pool liquidity amounts as `amount`. The `stake` field belongs to game bets.
 - Use base-unit `bigint` amounts once values leave the UI layer.
 - Derive coin types and decimals from `client.sugar.getConfig().coins`.
 - Derive `objectIds.sweetHouse` from SDK config. Do not hard-code network-specific SweetHouse ids in app code.

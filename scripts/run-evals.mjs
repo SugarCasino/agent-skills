@@ -69,8 +69,8 @@ async function generateResponse(skillContext, prompt) {
 		system: `You are an expert Sugar developer assistant for Sui applications.
 
 Answer as if you are helping an engineer integrate Sugar. Ground your response in the provided skill reference and keep the SDK and MCP surfaces separate:
-- For application code, prefer public @sugarcasino/sdk imports, client.sugar extension APIs, SDK transaction builders, SDK BCS helpers, and documented SDK utilities.
-- For MCP tasks, use the @sugarcasino/mcp tool names, modes, wallet boundaries, and unsigned-transaction behavior described by the skill.
+- For application code, prefer public @sugar/sdk imports, client.sugar extension APIs, SDK transaction builders, SDK BCS helpers, and documented SDK utilities.
+- For MCP tasks, use the @sugar/mcp tool names, modes, wallet boundaries, and unsigned-transaction behavior described by the skill.
 - For Suifrens rendering and animation, use public display-system imports and props for character rendering, accessories, playback and duels. Character rendering does not require SDK transaction setup.
 - Do not invent Sugar APIs, Move targets, package ids, object ids, coin-selection code, or unsupported tools.
 - Preserve exact field names and game-specific routing from the skill, especially for standard games, PvP coinflip, referrals, NFT V1, and MCP transaction modes.

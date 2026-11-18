@@ -1,10 +1,6 @@
 # Sugar agent skills
 
-> Release status: verify project ownership of the new npm/JSR namespace and the exact approved release before installing the new package names. This source migration does not publish packages.
-
-Skills for coding agents building with Sugar on Sui and rendering Suifrens characters.
-
-Skills follow the [Agent Skills](https://agentskills.io/) format.
+These skills help coding agents build Sugar apps on Sui and render Suifrens characters. They follow the [Agent Skills](https://agentskills.io/) format.
 
 [![skills.sh](https://skills.sh/b/SugarCasino/agent-skills)](https://skills.sh/SugarCasino/agent-skills)
 
@@ -32,7 +28,7 @@ npx skills add SugarCasino/agent-skills
 
 ### installation
 
-Set up `@sugarcasino/sdk` in an application, wire the `sugar()` client extension, resolve config, serialize transactions, and use public SDK exports.
+Install `@sugar/sdk` and connect it to a Sui client with `sugar()`. Covers configuration, transaction serialization, and public exports.
 
 Use when:
 
@@ -43,7 +39,7 @@ Use when:
 
 ### event-parsing
 
-Parse Sugar SDK events and raw generated numeric values through public SDK utilities and generated BCS helpers.
+Decode Sugar events with the SDK parsers and generated BCS helpers, and convert raw Move numeric values.
 
 Use when:
 
@@ -55,7 +51,7 @@ Use when:
 
 ### referrals
 
-Configure partner attribution and claim referral rewards through `@sugarcasino/sdk`.
+Configure partner attribution and claim referral rewards through `@sugar/sdk`.
 
 Use when:
 
@@ -66,7 +62,7 @@ Use when:
 
 ### sugar-nft
 
-Read the Sugar NFT V1 catalog, list owned NFTs, and build NFT V1 mint transactions using SDK-resolved package and object ids plus BCS helpers.
+Read the Sugar NFT V1 catalog, list owned NFTs, and build mint transactions. Package and object ids come from the SDK config; generated BCS helpers decode the objects.
 
 Use when:
 
@@ -78,7 +74,7 @@ Use when:
 
 ### sweethouse
 
-Build SweetHouse public pool transactions with `@sugarcasino/sdk`.
+Build SweetHouse public pool transactions with `@sugar/sdk`.
 
 Use when:
 
@@ -90,7 +86,7 @@ Use when:
 
 ### create-standard-games
 
-Build standard single-player Sugar game transactions with `@sugarcasino/sdk`.
+Build standard single-player Sugar game transactions with `@sugar/sdk`.
 
 Use when:
 
@@ -101,7 +97,7 @@ Use when:
 
 ### create-pvp-games
 
-Build PvP game flows with `@sugarcasino/sdk`. PvP Coinflip has its own specification; add a separate specification for each new PvP game.
+Create PvP game flows with `@sugar/sdk`, starting with PvP Coinflip. Each supported game has its own specification.
 
 Use when:
 
@@ -112,7 +108,7 @@ Use when:
 
 ### sugar-mcp
 
-Install, configure, operate, or troubleshoot the `@sugarcasino/mcp` server, bundled MCP App, or plugin bundle for Codex, Claude Code, and Cursor.
+Set up and use the `@sugar/mcp` server and bundled MCP App, with plugin installation for Codex, Claude Code, and Cursor.
 
 Use when:
 
@@ -129,17 +125,15 @@ Use when:
 
 ### suifrens-display
 
-Integrate capy and bullshark rendering, palettes, accessories, static gestures, runner and football kits, standalone SVG exports, and the Fastify SVG/PNG example.
+Render capys and bullsharks with palettes, accessories, gestures, and runner or football kits. Includes standalone SVG exports and the Fastify SVG/PNG example.
 
 ### suifrens-animation
 
-Configure animation playback, custom part sequences, battle sprites and scripted duels. Covers the animation object, iteration counts, play state, replay triggers, and nested duel attack steps.
+Animate Suifrens with custom part sequences, battle sprites, and scripted duels. Covers playback settings, iteration counts, replay triggers, and nested attack steps.
 
 ## Usage
 
-Once installed, agents can use the skills for matching tasks.
-
-Examples:
+After installation, ask your agent to work on a task covered by a skill. For example:
 
 ```text
 Set up Sugar in this app
@@ -205,6 +199,16 @@ Render a Suifren with a runner kit and a thumbs-up gesture
 Add Suifrens animation playback and a scripted duel
 ```
 
+## Package releases and compatibility
+
+The public npm packages are `@sugar/sdk`, `@sugar/mcp`, and `@sugar/suifrens-display-system`. This repository distributes skills through the skills CLI; its private package manifest is development tooling and is not published to npm.
+
+The SDK workspace has been merged into [Sugar TypeScript SDKs](https://github.com/SugarCasino/ts-sdks). The APIs documented by these skills will be available in the next beta release. Before installing, check the package's published versions and dist-tags. Use a published exact version or `@beta` for a beta release; use `@latest` only once a stable release is available. Keep an application's existing version pin unless an upgrade is requested.
+
+The npm packages bundle skill entrypoints that fetch full instructions and relative references from `agent-skills/main`. Merge matching skill updates before publishing the SDK packages. Skill metadata versions are independent of npm package versions. See [public release coordination](https://github.com/SugarCasino/.github/blob/main/docs/publication.md).
+
+The skills follow the public SDK APIs on `main` for the next beta release. Use `client.sugar.getConfig().coins` for supported coin keys and metadata, and pass `SuiClientTypes.Event` values to the event parsers.
+
 ## Development checks
 
 Install dependencies with pnpm:
@@ -213,7 +217,11 @@ Install dependencies with pnpm:
 pnpm install
 ```
 
-Run skill evals with Anthropic:
+GitHub Actions is restricted to the exact action revisions used by the workflows. When updating an action pin, update the repository action allowlist as well.
+
+Pull requests run validation, lint, and tests without an API key. Anthropic evaluations run manually or on the monthly schedule when the repository has an API key. Results are attached to the workflow run.
+
+To run skill evals locally with Anthropic:
 
 ```bash
 ANTHROPIC_API_KEY=... pnpm run eval
@@ -231,13 +239,17 @@ Check linting and formatting with Oxlint and Oxfmt:
 pnpm run lint
 ```
 
-Validate the repository without an LLM provider:
+Check skill structure and links locally:
 
 ```bash
 pnpm run validate
 ```
 
-This checks skill frontmatter, directory/name consistency, line limits, eval structure, and relative Markdown links.
+The validator checks frontmatter, matching folder and skill names, line limits, eval structure, and relative Markdown links. It does not call an LLM.
+
+Run `pnpm test` to check the publication identity rules. The [contribution policy](docs/git-publication-privacy.md) explains how these apply to SugarCasino members and external contributors.
+
+The skills start at version `1.0.0`. SDK and MCP packages have their own versions, so keep any version your app already requires. Package names and install commands follow [Sugar TypeScript SDKs](https://github.com/SugarCasino/ts-sdks).
 
 ## Skill structure
 

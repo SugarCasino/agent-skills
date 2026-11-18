@@ -1,10 +1,10 @@
 ---
 name: sugar-nft
-description: Read or mint Sugar NFT V1 objects with @sugarcasino/sdk. Use when reading and decoding `NftV1Factory`, listing or decoding an owner's `NftV1` objects, deriving the network-specific type with the SDK BCS helper, building `client.sugar.tx.nftV1.mint`, resolving a catalog spec id, or avoiding hard-coded NFT package or factory ids.
+description: Read or mint Sugar NFT V1 objects with @sugar/sdk. Use when reading and decoding `NftV1Factory`, listing or decoding an owner's `NftV1` objects, deriving the network-specific type with the SDK BCS helper, building `client.sugar.tx.nftV1.mint`, resolving a catalog spec id, or avoiding hard-coded NFT package or factory ids.
 license: MIT
 metadata:
   author: sugar
-  version: '1.4.2'
+  version: '1.0.0'
   short-description: Read and mint Sugar NFT V1 objects
   tags:
     - sugar
@@ -15,11 +15,11 @@ metadata:
 
 # Sugar NFT V1
 
-Use this skill for application code that imports `@sugarcasino/sdk` and reads the NFT V1 catalog, lists NFTs directly owned by an address, or builds an NFT V1 mint transaction. If the app has not configured the SDK client yet, use `installation` first.
+Use this skill for application code that imports `@sugar/sdk` and reads the NFT V1 catalog, lists NFTs directly owned by an address, or builds an NFT V1 mint transaction. If the app has not configured the SDK client yet, use `installation` first.
 
-For capy or bullshark SVG rendering, use [suifrens-display](../suifrens-display/SKILL.md). Sugar NFT V1 ownership and minting do not define the Suifrens character appearance schema.
+For capy or bullshark SVG rendering, use [suifrens-display](../suifrens-display/SKILL.md). Suifrens have their own character appearance schema, separate from Sugar NFT V1 ownership and minting.
 
-Use the active client's resolved `packageIds.nftV1`, `objectIds.nftV1Factory`, and `bcs.NftV1.typeTag()`; do not hard-code a mainnet or testnet package, factory id, or Move type string.
+Get `packageIds.nftV1`, `objectIds.nftV1Factory`, and `bcs.NftV1.typeTag()` from the active client. This keeps package ids, factory ids, and Move types correct for the selected network.
 
 ## Default workflow
 

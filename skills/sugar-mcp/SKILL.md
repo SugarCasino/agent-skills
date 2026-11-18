@@ -1,10 +1,10 @@
 ---
 name: sugar-mcp
-description: Install, configure, operate, or troubleshoot the @sugarcasino/mcp server, bundled MCP App, or plugin bundle for Sugar. Use when adding direct MCP configuration or installing the Codex, Claude Code, or Cursor plugin; reading config, live game metadata, wallet balances, coin objects, NFT V1 catalog/ownership, or referral rewards; building standard, PvP, referral-claim, NFT V1 mint, or SweetHouse transaction plans including Keno and Soccer; using read-only/build/dry-run/execute modes; pairing browser wallets; managing local session wallets; handling SuiNS owner inputs; or explaining MCP safety boundaries.
+description: Install, configure, operate, or troubleshoot the @sugar/mcp server, bundled MCP App, or plugin bundle for Sugar. Use when adding direct MCP configuration or installing the Codex, Claude Code, or Cursor plugin; reading config, live game metadata, wallet balances, coin objects, NFT V1 catalog/ownership, or referral rewards; building standard, PvP, referral-claim, NFT V1 mint, or SweetHouse transaction plans including Keno and Soccer; using read-only/build/dry-run/execute modes; pairing browser wallets; managing local session wallets; handling SuiNS owner inputs; or explaining MCP safety boundaries.
 license: MIT
 metadata:
   author: sugar
-  version: '1.10.0'
+  version: '1.0.0'
   short-description: Operate the Sugar MCP server
   tags:
     - sugar
@@ -15,16 +15,18 @@ metadata:
 
 # Sugar MCP
 
-Use this skill for `@sugarcasino/mcp` operation. If the user is writing application code that imports `@sugarcasino/sdk`, use `installation`, `create-standard-games`, `create-pvp-games`, [sweethouse](../sweethouse/SKILL.md), [sugar-nft](../sugar-nft/SKILL.md), or [referrals](../referrals/SKILL.md) instead.
+Use this skill for `@sugar/mcp` operation. If the user is writing application code that imports `@sugar/sdk`, use `installation`, `create-standard-games`, `create-pvp-games`, [sweethouse](../sweethouse/SKILL.md), [sugar-nft](../sugar-nft/SKILL.md), or [referrals](../referrals/SKILL.md) instead.
 
-The MCP server uses `@sugarcasino/sdk`. It reads Sugar config, game metadata, wallet balances, coin objects, NFTs, and referral rewards; builds unsigned transactions; dry-runs unsigned transactions; and can execute only through an explicit paired-wallet approval or a user-created local session wallet.
+The MCP server uses `@sugar/sdk` to read config, game metadata, balances, coin objects, NFTs, and referral rewards. It can build or dry-run unsigned transactions. Execution requires either explicit approval from a paired wallet or a local session wallet created by the user.
 
 ## Install or add the plugin
 
-Use Node.js `^24.0.0 || ^26.0.0` and `@sugarcasino/mcp@beta` for the MCP surface described here. For direct installation across detected coding agents:
+Check that the requested npm version or dist-tag is published. The MCP features documented here will be available in the next beta release. Once published, use `@sugar/mcp@beta` or a published exact version for a beta release, including in `add-mcp` and manual stdio configuration. The `@latest` examples below require a stable release. A public source repository does not establish npm availability.
+
+Use Node.js `^24.0.0 || ^26.0.0` with `@sugar/mcp@latest`. To add the server to detected coding agents:
 
 ```bash
-npx add-mcp @sugarcasino/mcp@beta --name sugar
+npx add-mcp @sugar/mcp@latest --name sugar
 ```
 
 Use manual stdio configuration only when the user needs to configure one MCP client explicitly or their environment does not support `add-mcp`:
@@ -34,15 +36,15 @@ Use manual stdio configuration only when the user needs to configure one MCP cli
 	"mcpServers": {
 		"sugar": {
 			"command": "npx",
-			"args": ["-y", "@sugarcasino/mcp@beta"]
+			"args": ["-y", "@sugar/mcp@latest"]
 		}
 	}
 }
 ```
 
-After changing MCP client config, tell the user to restart or reload the client so it starts the server.
+After a config change, ask the user to restart or reload the MCP client to start the server.
 
-Use the plugin bundle when the user wants marketplace installation or the bundled client integration. The package ships manifests for Codex, Claude Code, and Cursor; those manifests register the version-pinned `@sugarcasino/mcp` stdio server automatically.
+Use the plugin bundle when the user wants marketplace installation or the bundled client integration. The package ships manifests for Codex, Claude Code, and Cursor; those manifests register the version-pinned `@sugar/mcp` stdio server automatically.
 
 For Codex, add the public Sugar marketplace from GitHub:
 
@@ -103,17 +105,17 @@ Do not invent tools for unsupported games. Slots are backend-driven and are not 
 
 ## Modes
 
-Use the lightest mode that answers the request. For `read-only`, `build`, `dry-run`, and `execute` behavior, read [references/transaction-tools.md](references/transaction-tools.md).
+Choose the mode that matches the user's request. For `read-only`, `build`, `dry-run`, and `execute` behavior, read [references/transaction-tools.md](references/transaction-tools.md).
 
 Use `read_game_metadata` before showing or validating live stake limits, RTP, or Keno, Plinko, Soccer, or Wheel configuration. It requires `game`; use `read_config` instead for broad discovery.
 
 Use `list_nfts` for read-only NFT V1 browsing. App-capable hosts render the catalog and owned NFTs in separate views; unsupported image URLs remain available as text.
 
-Referral amount reads are read-only simulations of the SDK's real claim transaction. They require `owner`; commission accepts an optional `coinType` and defaults to configured SUI, while level-up USD rewards use configured USDC. They return `0` when a claim cannot be simulated or is unavailable. For SDK application integration or partner attribution, use [referrals](../referrals/SKILL.md).
+Referral reads simulate the SDK's claim transaction without submitting it. They require `owner`; commission accepts an optional `coinType` and defaults to configured SUI, while level-up USD rewards use configured USDC. They return `0` when a claim cannot be simulated or is unavailable. For SDK application integration or partner attribution, use [referrals](../referrals/SKILL.md).
 
 SweetHouse tools build public pool deposits, staked-coin redeem requests, and delayed self-claims for existing redeem requests. Use `mode: "read-only"` to explain targets and required inputs without transaction bytes; build, dry-run, and execute modes require SDK-required fields. For SDK application integration, use [sweethouse](../sweethouse/SKILL.md).
 
-Wallet tools manage two different wallet paths. Use `sugar_login`, `sugar_logout`, and `get_connection_status` for paired browser-wallet approval flows. Use `setup_session_wallet`, `get_session_wallet`, and `fund_session_wallet` for a persistent local session wallet. For approval and session-wallet boundaries, read [references/wallets.md](references/wallets.md).
+Choose wallet tools based on how the user wants to sign. Use `sugar_login`, `sugar_logout`, and `get_connection_status` for paired browser-wallet approval flows. Use `setup_session_wallet`, `get_session_wallet`, and `fund_session_wallet` for a persistent local session wallet. For approval and session-wallet boundaries, read [references/wallets.md](references/wallets.md).
 
 ## Common inputs and game fields
 
@@ -126,7 +128,7 @@ For common MCP inputs, standard game fields, PvP Coinflip fields, NFT mint input
 - Use `read_config` before building when network, coin, NFT V1 package id, or supported games are uncertain.
 - Pass partner attribution as top-level `partner`; do not set `metadata.partner` or `metadata.referrer`.
 - Use PvP tools for PvP Coinflip. Do not route PvP Coinflip through standard game builders.
-- Use `read_game_metadata` before supplying any live game input or non-default `betCount`. It provides the valid Keno/Plinko/Wheel configs, Soccer configs/countries/shot zones, and limits used by MCP's on-chain maximum validation for Keno, Limbo, Plinko, Range, Soccer, and Wheel. For a natural-language Soccer country request, match the returned country name and pass its key as `countryId`; do not guess an ID or substitute an ISO code.
+- Use `read_game_metadata` before supplying any live game input or non-default `betCount`. It provides the valid Keno/Plinko/Wheel configs, Soccer configs/countries/shot zones, and limits used by MCP's on-chain maximum validation for Limbo, Plinko, Range, Soccer, and Wheel. For a natural-language Soccer country request, match the returned country name and pass its key as `countryId`; do not guess an ID or substitute an ISO code.
 - For PvP join, expect live object reads while building or dry-running because the SDK resolves the current game stake from the game object.
 - `list_nfts` is read-only. Use `build_nft_v1_mint_transaction` for NFT V1 mint plans, builds, dry-runs, or explicit execute-mode requests.
 - Use `get_referral_commission` or `get_referral_level_up_usd_rewards` before presenting a claimable referral amount. Use the matching referral claim transaction tool only for a plan, build, dry-run, or explicit execute-mode request.

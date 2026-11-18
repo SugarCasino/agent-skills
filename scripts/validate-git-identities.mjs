@@ -1,68 +1,130 @@
 #!/usr/bin/env node
+
 import { spawnSync } from 'node:child_process';
-import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-const policy = JSON.parse(
-	readFileSync(new URL('../.github/publication-identities.json', import.meta.url), 'utf8'),
+const memberPolicy = JSON.parse(
+	readFileSync(new URL('../.github/publication-members.json', import.meta.url), 'utf8'),
 );
+
 const oid = /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i;
 const zero = /^0+$/;
 
-export function allowedIdentity(name, email, identities = policy.identities) {
-	return identities.some(
-		(entry) => entry.name === name && entry.email.toLowerCase() === email.toLowerCase(),
+export function isOrganizationMember(name, email, login) {
+	const normalized = (value) => (typeof value === 'string' ? value.toLowerCase() : '');
+	const noreplyLogin = /^(?:\d+\+)?([^@]+)@users\.noreply\.github\.com$/i.exec(email ?? '')?.[1];
+	return memberPolicy.members.some(
+		(member) =>
+			[login, noreplyLogin, name].some((value) => normalized(value) === normalized(member.login)) ||
+			member.gitNames.some((gitName) => normalized(gitName) === normalized(name)),
 	);
 }
 
-export function inspectIdentityLine(line, identities = policy.identities) {
-	const match = /^(.*?) <([^<>\r\n]+)>(?: \d+ [+-]\d{4})?$/.exec(line);
-	return Boolean(match && allowedIdentity(match[1], match[2], identities));
+function isNoreplyEmail(email) {
+	return /^(?:[^@]+@users\.noreply\.github\.com|noreply@github\.com)$/i.test(email);
 }
 
-// Whole Unicode segments; encoded substrings are not personal names.
-const protectedMessageWordHashes = new Set([
-	'0478721f1106c2a631a90181bac7efc77767a3903eb9220687bff8a14e940fa7',
-	'1f0dea80a1af4eefa352c04bdaaa79f79433a7b458aaeaa927cb73ac9f63326a',
-	'51fc178c3b35d5500b623576f1d834a57c6e10353f6c6d27cd8340020b2e30c5',
-	'7cadab457ad8d811f134612436daaa5e5914b20dc2502865f714035b0f267680',
-]);
-function containsProtectedMessageWord(message, wordHashes) {
-	for (const [word] of message
-		.normalize('NFKC')
-		.toLowerCase()
-		.matchAll(/[\p{L}\p{M}\p{N}]+/gu)) {
-		if (wordHashes.has(createHash('sha256').update(word).digest('hex'))) {
-			return true;
-		}
-	}
-	return false;
+function validIdentityFormat(name, email) {
+	return (
+		typeof name === 'string' &&
+		name.trim().length > 0 &&
+		!/[<>\r\n]/.test(name) &&
+		typeof email === 'string' &&
+		/^[^\s<>@]+@[^\s<>@]+$/.test(email)
+	);
 }
-export function inspectMessage(
-	message,
-	identities = policy.identities,
-	wordHashes = protectedMessageWordHashes,
-) {
-	const problems = [];
-	if (containsProtectedMessageWord(message, wordHashes)) {
-		problems.push('protected personal name in message');
+
+// External contributors remain free to use their own public name and email.
+export function allowedIdentity(name, email, login) {
+	return (
+		validIdentityFormat(name, email) &&
+		(!isOrganizationMember(name, email, login) || isNoreplyEmail(email))
+	);
+}
+
+// GitHub resolves a personal-email commit to its account even when its Git name differs.
+export function githubCommitLogins(sha, env = process.env, run = spawnSync) {
+	if (env.GITHUB_ACTIONS !== 'true') {
+		return {};
 	}
+	requireOid(sha);
+	if (!env.GITHUB_TOKEN) {
+		throw new Error('A read-only GitHub token is required to identify commit accounts.');
+	}
+	const result = run(
+		'gh',
+		[
+			'api',
+			`repos/SugarCasino/agent-skills/commits/${sha}`,
+			'--jq',
+			'{author: .author.login, committer: .committer.login}',
+		],
+		{
+			env: { ...env, GH_TOKEN: env.GITHUB_TOKEN },
+			encoding: 'utf8',
+			timeout: 30_000,
+			maxBuffer: 1024 * 1024,
+		},
+	);
+	if (result.error || result.status !== 0) {
+		throw new Error('Unable to resolve GitHub commit accounts. Values withheld.');
+	}
+	try {
+		const accounts = JSON.parse(result.stdout);
+		if (
+			!accounts ||
+			!['author', 'committer'].every(
+				(role) =>
+					Object.hasOwn(accounts, role) &&
+					(accounts[role] === null || typeof accounts[role] === 'string'),
+			)
+		) {
+			throw new Error();
+		}
+		return accounts;
+	} catch {
+		throw new Error('Invalid GitHub commit account response. Values withheld.');
+	}
+}
+
+function identityProblem(line, login) {
+	const match = /^(.*?) <([^<>\r\n]+)>(?: \d+ [+-]\d{4})?$/.exec(line ?? '');
+	if (!match || !validIdentityFormat(match[1], match[2])) {
+		return 'malformed identity';
+	}
+	if (!allowedIdentity(match[1], match[2], login)) {
+		return 'personal email for organization member';
+	}
+	return undefined;
+}
+
+export function warnAboutPersonalEmails(text) {
+	const emails =
+		text.match(/[a-z0-9][a-z0-9.!#$%&'*+/=?^_{|}~[\]-]*@[a-z0-9.-]+\.[a-z]{2,}/gi) ?? [];
+	if (emails.some((email) => !isNoreplyEmail(email))) {
+		console.warn(
+			'[git-identities] A public email address is present. Use a GitHub noreply address if you prefer to keep your email private. This warning does not block external contributions.',
+		);
+	}
+}
+
+export function inspectIdentityLine(line) {
+	return identityProblem(line) === undefined;
+}
+
+export function inspectMessage(message) {
+	const problems = [];
 	for (const line of message.split('\n')) {
 		const trailer =
 			/^\s*(?:>\s*|[-*]\s+)*(co-authored-by|signed-off-by|reviewed-by|acked-by):\s*(.*)$/i.exec(
 				line,
 			);
-		if (trailer && !inspectIdentityLine(trailer[2], identities)) {
-			problems.push('unapproved identity trailer');
-		}
-	}
-	// Squash messages may quote author information in prose rather than a trailer.
-	for (const email of message.match(
-		/[a-z0-9][a-z0-9.!#$%&'*+/=?^_{|}~[\]-]*@[a-z0-9.-]+\.[a-z]{2,}/gi,
-	) ?? []) {
-		if (!identities.some((entry) => entry.email.toLowerCase() === email.toLowerCase())) {
-			problems.push('unapproved email in message');
+		if (trailer) {
+			const problem = identityProblem(trailer[2]);
+			if (problem) {
+				problems.push(problem === 'malformed identity' ? 'malformed identity trailer' : problem);
+			}
 		}
 	}
 	return [...new Set(problems)];
@@ -88,12 +150,21 @@ export function checkObjects(commits, tags = []) {
 	const problems = [];
 	for (const sha of new Set(commits)) {
 		const raw = git(['cat-file', 'commit', requireOid(sha)]);
+		warnAboutPersonalEmails(raw);
 		const split = raw.indexOf('\n\n');
 		const headers = raw.slice(0, split).split('\n');
+		const accounts = githubCommitLogins(sha);
 		for (const field of ['author', 'committer']) {
 			const value = headers.find((line) => line.startsWith(`${field} `))?.slice(field.length + 1);
-			if (!value || !inspectIdentityLine(value)) {
-				problems.push({ sha, reason: `unapproved ${field} identity` });
+			const problem = identityProblem(value, accounts[field]);
+			if (problem) {
+				problems.push({
+					sha,
+					reason:
+						problem === 'malformed identity'
+							? `malformed ${field} identity`
+							: `${field}: ${problem}`,
+				});
 			}
 		}
 		for (const reason of inspectMessage(raw.slice(split + 2))) {
@@ -102,14 +173,20 @@ export function checkObjects(commits, tags = []) {
 	}
 	for (const sha of new Set(tags)) {
 		const raw = git(['cat-file', 'tag', requireOid(sha)]);
+		warnAboutPersonalEmails(raw);
 		const split = raw.indexOf('\n\n');
 		const tagger = raw
 			.slice(0, split)
 			.split('\n')
 			.find((line) => line.startsWith('tagger '))
 			?.slice(7);
-		if (!tagger || !inspectIdentityLine(tagger)) {
-			problems.push({ sha, reason: 'unapproved tagger identity' });
+		const problem = identityProblem(tagger);
+		if (problem) {
+			problems.push({
+				sha,
+				reason:
+					problem === 'malformed identity' ? 'malformed tagger identity' : `tagger: ${problem}`,
+			});
 		}
 		for (const reason of inspectMessage(raw.slice(split + 2))) {
 			problems.push({ sha, reason });
@@ -138,15 +215,22 @@ export function main(args = process.argv.slice(2)) {
 	const tags = [];
 	if (args[0] === '--config' && args.length === 1) {
 		for (const field of ['AUTHOR', 'COMMITTER']) {
-			if (!inspectIdentityLine(git(['var', `GIT_${field}_IDENT`]).trim())) {
+			const identity = git(['var', `GIT_${field}_IDENT`]).trim();
+			warnAboutPersonalEmails(identity);
+			const problem = identityProblem(identity);
+			if (problem) {
 				throw new Error(
-					`Unapproved effective ${field.toLowerCase()} identity. Set a publication identity from .github/publication-identities.json.`,
+					`${field.toLowerCase()}: ${problem}. SugarCasino members must use a GitHub noreply email. Values withheld.`,
 				);
 			}
 		}
 	} else if (args[0] === '--message' && args.length === 2) {
-		if (inspectMessage(readFileSync(args[1], 'utf8')).length) {
-			throw new Error('Unapproved publication identity in commit message. Values withheld.');
+		const message = readFileSync(args[1], 'utf8');
+		warnAboutPersonalEmails(message);
+		if (inspectMessage(message).length) {
+			throw new Error(
+				'Invalid attribution in commit message. Organization members must use GitHub noreply emails. Values withheld.',
+			);
 		}
 	} else if (args[0] === '--range' && args.length === 3) {
 		const base = requireOid(args[1]);

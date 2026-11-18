@@ -13,18 +13,18 @@ import {
 	parseGameDetails,
 	parseGameEvent,
 	parseSugarEvent,
-} from '@sugarcasino/sdk/utils';
+} from '@sugar/sdk/utils';
 ```
 
 ## Game events
 
-Use events from the Sui core API (`SuiClientTypes.Event`), with `eventType`, `module`, and `bcs: Uint8Array`.
+Use events from the Sui core API (`SuiClientTypes.Event`), with `eventType`, `module`, and `bcs: Uint8Array`. The parser signatures accept `SuiClientTypes.Event`. At runtime, `parseGameEvent` reads only `eventType` and `module`, while `parseSugarEvent` also needs BCS bytes to decode a payload. Pass the full typed event in TypeScript; do not cast a minimal envelope to bypass the signature.
 
 Prefer `parseSugarEvent(event)` when the raw Sui event includes BCS bytes. It resolves the supported Sugar `game`, decodes the event payload, and includes decoded `gameDetails` for `BetResultEvent`.
 
 ```ts
 const decoded = parseSugarEvent(event);
-if (decoded?.event.type === 'BetResultEvent') {
+if (decoded && 'gameDetails' in decoded) {
 	const result = {
 		game: decoded.game,
 		event: decoded.event.type,
@@ -51,6 +51,21 @@ if (parsed?.event === 'BetResultEvent') {
 
 `parseGameEvent(event)` returns `{ game, event }`. Do not use the older `gameId` or `eventName` field names. `parseGameDetails({ game, gameDetails })` decodes known detail keys and preserves on-chain key names.
 
+Generic `GameDetails<Game>` fields may be unavailable to TypeScript when the mapped type does not distribute over the game union. Narrow the outer event with `'gameDetails' in decoded`, confirm the game, and call `parseGameDetails` with a literal identifier for game-specific fields:
+
+```ts
+const decoded = parseSugarEvent(event);
+if (decoded && 'gameDetails' in decoded && decoded.game === 'keno') {
+	const details = parseGameDetails({
+		game: 'keno',
+		gameDetails: decoded.event.data.game_details,
+	});
+	const payout = details.payout_amount;
+}
+```
+
+Checking only `decoded.event.type` does not narrow the outer event union enough to access `decoded.gameDetails`.
+
 Decoded details have a null prototype. Use `Object.hasOwn(details, key)` to check keys, including on `gameDetails` returned by `parseSugarEvent`. Unknown keys such as `__proto__` and `constructor` decode as strings. Use `Object.entries()` or JSON serialization as usual; do not call inherited methods such as `details.hasOwnProperty()`.
 
 For PvP Coinflip, use `client.sugar.bcs.PvPCoinflipGameCreatedEvent`, `PvPCoinflipGameResolvedEvent`, and `PvPCoinflipGameCancelledEvent` when direct event parsing is needed.
@@ -73,4 +88,4 @@ if (isMoveI64(value)) {
 
 Known vector detail fields are decoded as arrays: for example, Keno `picks` and `drawn_numbers` are `number[]`, while `payout_amount` is `bigint` and `multiplier` is a JavaScript number. Unknown detail keys fall back to string decoding; they are not automatically interpreted as arbitrary numeric fields. Event `metadata` stays a raw vec-map of bytes and follows the application's own encoding contract.
 
-Parsed `u64` and `u128` game detail values return `bigint` to preserve precision. Convert them to display strings or decimal UI values only at the presentation boundary.
+Parsed `u64` and `u128` game detail values return `bigint` to preserve precision. Convert them to strings or decimal values when displaying them.

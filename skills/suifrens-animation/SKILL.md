@@ -1,6 +1,6 @@
 ---
 name: suifrens-animation
-description: Add Suifrens animation playback, custom part sequences, battle sprites, health bars, and scripted duels using @sugarcasino/suifrens-display-system. Use for animation configuration, iterations, play state, triggers, timing helpers, or useDuelScript attack and victory steps. Static portraits, accessories and gestures belong to suifrens-display.
+description: Add Suifrens animation playback, custom part sequences, battle sprites, health bars, and scripted duels using @sugar/suifrens-display-system. Use for animation configuration, iterations, play state, triggers, timing helpers, or useDuelScript attack and victory steps. Static portraits, accessories and gestures belong to suifrens-display.
 license: MIT
 metadata:
   author: sugar
@@ -34,12 +34,12 @@ Both `SuiFrenImage` and `SuiFrenImageInline` accept a single `animation` object.
 
 - Use `playState: 'idle'` to avoid starting, `'running'` to play, `'paused'` to pause, or `'stopped'` to stop. Omitted play state starts by default.
 - `playback.iterations` counts directional passes; it defaults to one and accepts `'infinite'`. `alternate: true` reverses every other pass. Keep `speed` in `playback`.
-- Changing `trigger` restarts the timeline. Use it to replay repeated actions rather than remounting the whole character.
+- Changing `trigger` restarts the timeline. Use it to replay an action without remounting the character.
 - Keep `direction`, `startAt`, `holdOnComplete`, and `transitionMs` inside `animation` when used.
 
 Import `AnimationConfig`, `AnimationSequence`, `PlaybackOptions` and other public types from `/types`. Import `AnimationProvider`, hooks, `getPresetSequence`, `getPresetDurationMs`, and `normalizePlayback` from `/animation`. The image components already provide their animation context when `animation` is set; do not wrap them in another provider without a specific low-level need.
 
-For timing, use `getPresetDurationMs(preset, playback)` rather than copying preset durations. Validate unknown presets: `getPresetSequence` can return `undefined` and the duration helper can return `null`. Do not promise a preset based only on a natural-language action name.
+Read preset timing with `getPresetDurationMs(preset, playback)` to avoid copying duration constants. Validate unknown presets: `getPresetSequence` can return `undefined` and the duration helper returns `null` for unknown presets or infinite playback. Do not promise a preset based only on a natural-language action name.
 
 For custom sequences or duels, read [references/sequences-and-duels.md](references/sequences-and-duels.md).
 
