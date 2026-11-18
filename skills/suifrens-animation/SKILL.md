@@ -39,7 +39,7 @@ Both `SuiFrenImage` and `SuiFrenImageInline` accept a single `animation` object.
 
 Import `AnimationConfig`, `AnimationSequence`, `PlaybackOptions` and other public types from `/types`. Import `AnimationProvider`, hooks, `getPresetSequence`, `getPresetDurationMs`, and `normalizePlayback` from `/animation`. The image components already provide their animation context when `animation` is set; do not wrap them in another provider without a specific low-level need.
 
-Read preset timing with `getPresetDurationMs(preset, playback)` to avoid copying duration constants. Validate unknown presets: `getPresetSequence` can return `undefined` and the duration helper can return `null`. Do not promise a preset based only on a natural-language action name.
+Read preset timing with `getPresetDurationMs(preset, playback)` to avoid copying duration constants. Validate unknown presets: `getPresetSequence` can return `undefined` and the duration helper returns `null` for unknown presets or infinite playback. Do not promise a preset based only on a natural-language action name.
 
 For custom sequences or duels, read [references/sequences-and-duels.md](references/sequences-and-duels.md).
 

@@ -21,6 +21,8 @@ The MCP server uses `@sugar/sdk` to read config, game metadata, balances, coin o
 
 ## Install or add the plugin
 
+Check that the requested npm version or dist-tag is published. The initial workspace uses Changesets beta mode: use `@sugar/mcp@beta` or a published exact version for a beta release, including in `add-mcp` and manual stdio configuration. The `@latest` examples below require a stable release. A public source repository does not establish npm availability.
+
 Use Node.js `^24.0.0 || ^26.0.0` with `@sugar/mcp@latest`. To add the server to detected coding agents:
 
 ```bash

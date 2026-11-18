@@ -51,7 +51,7 @@ import { parseCoinType, toBigInt, toU8, toU16, toU32 } from '@sugar/sdk/utils';
 
 The package root exposes `sugar`, `SugarClient`, `SUPPORTED_SUI_NETWORKS`, `SugarCoin`, and `SugarNetwork`. Game ids and game-specific option types live in `@sugar/sdk/games`. Parser and numeric helpers live in `@sugar/sdk/utils`.
 
-For a coin selector, read keys and metadata from `client.sugar.getConfig().coins`. The current PR does not export `SUGAR_COINS`, `COIN_SIDES`, or `PVP_COINFLIP_ACTIONS`; keep those imports out of code targeting this PR.
+For a coin selector, read keys and metadata from `client.sugar.getConfig().coins`.
 
 Use these game-specific public types when useful: `GAMES`, `Game`, `StandardGame`, `PvPGame`, `CoinSide`, `PvPCoinflipAction`, `CreateGameBetOptions`, `CoinflipTransactionOptions`, `KenoTransactionOptions`, `LimboTransactionOptions`, `PlinkoTransactionOptions`, `RangeTransactionOptions`, `SoccerTransactionOptions`, `WheelTransactionOptions`, `CreatePvPCoinflipTransactionOptions`, `JoinPvPCoinflipTransactionOptions`, and `CancelPvPCoinflipTransactionOptions`.
 
@@ -89,6 +89,8 @@ Use an ESM project (`"type": "module"`) with Node.js `^24.0.0 || ^26.0.0`. Match
 ```bash
 npm install @sugar/sdk @mysten/sui@2 @mysten/bcs@2
 ```
+
+Check npm availability and dist-tags before installation. The initial SDK workspace uses Changesets beta mode: for a published beta, use `npm install @sugar/sdk@beta @mysten/sui@2 @mysten/bcs@2` or a published exact version. The unqualified command above selects `latest` and requires a stable release. A public repository does not establish that a package has been published.
 
 Keep the package version your application already requires. These instructions follow the npm packages in `SugarCasino/ts-sdks`. A skill version does not specify an SDK release.
 
@@ -191,13 +193,13 @@ For event parsing, raw generated BCS numeric conversion, and direct BCS event he
 5. Keep the consuming app on ESM and pass the explicit `network` required by current client constructors.
 6. Route game-specific work to the standard or PvP skill after base setup; use [sweethouse](../sweethouse/SKILL.md) for SweetHouse public pool flows, [sugar-nft](../sugar-nft/SKILL.md) for NFT V1 catalog/ownership/mint flows, [event-parsing](../event-parsing/SKILL.md) for event or raw numeric parsing, and [referrals](../referrals/SKILL.md) for attribution or reward claims.
 
-## Local SDK updates awaiting PR inclusion
+## Public constants
 
-The uncommitted updates carried over from the old skills repo describe these additional exports:
+The initial public SDK at revision `c9509319` does not export `SUGAR_COINS`, `COIN_SIDES`, or `PVP_COINFLIP_ACTIONS`; use `client.sugar.getConfig().coins` for coin keys there. If a later installed SDK exports these constants, use them for coin selectors and input validation:
 
 ```ts
 import { sugar, SUGAR_COINS } from '@sugar/sdk';
 import { COIN_SIDES, PVP_COINFLIP_ACTIONS } from '@sugar/sdk/games';
 ```
 
-Once the SDK exports them, use `SUGAR_COINS` as the readonly supported coin-key list, with `SugarCoin` derived from its elements. Use `COIN_SIDES` and `PVP_COINFLIP_ACTIONS` for validation and selectors instead of keeping duplicate lists. Verify those exports in the installed SDK before using this example. They are absent from [PR #1 at c9509319](https://github.com/SugarCasino/ts-sdks/pull/1), the revision checked for this skill.
+Use `SUGAR_COINS` as the readonly supported coin-key list, with `SugarCoin` derived from its elements. Use `COIN_SIDES` and `PVP_COINFLIP_ACTIONS` for validation and selectors instead of keeping duplicate lists. Verify those exports in the installed SDK before using this example.

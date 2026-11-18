@@ -21,7 +21,7 @@ Read `client.sugar.getGameParameters({ game: 'pvp-coinflip', coinType })` before
 ## Public surface
 
 ```ts
-client.sugar.getPvPCoinflipGames(options?);
+client.sugar.getPvPCoinflipGames(); // Uses the default page size.
 client.sugar.tx.pvpCoinflip.createGame(options);
 client.sugar.tx.pvpCoinflip.joinGame(options);
 client.sugar.tx.pvpCoinflip.cancelGame(options);

@@ -21,7 +21,7 @@ App-capable clients may render the bundled Sugar Transaction Inspector UI. The A
 
 - `network` defaults to `testnet`; only `testnet` and `mainnet` are supported.
 - `providerUrl` can override the Sui gRPC endpoint.
-- `config` accepts SDK-style `packageIds`, `objectIds`, and coin-metadata overrides. Game, referral, and core packages currently use `@suigar/*` MVR names by default (independent of the npm `@sugar/*` scope), and accept explicit overrides through `packageIds`. The `nftV1` package is configured per network. The current MCP schema omits `config.packageIds.keno`, even though the SDK supports that override; do not pass it to MCP tools. Put a custom price-info object id beside its coin as `coins.sui.priceInfoObjectId` or `coins.usdc.priceInfoObjectId`; singleton ids such as `sweetHouse` and `nftV1Factory` belong in `objectIds`.
+- `config` accepts SDK-style `packageIds`, `objectIds`, and coin-metadata overrides. Game, referral, and core packages currently use `@suigar/*` MVR names by default (independent of the npm `@sugar/*` scope), and accept explicit overrides through `packageIds`. The `nftV1` package is configured per network. The MCP schema omits `config.packageIds.keno`, even though the SDK supports that override; do not pass it to MCP tools. Put a custom price-info object id beside its coin as `coins.sui.priceInfoObjectId` or `coins.usdc.priceInfoObjectId`; singleton ids such as `sweetHouse` and `nftV1Factory` belong in `objectIds`.
 - `partner` is a top-level partner wallet address forwarded through `sugar({ partner })`.
 - Invalid package/object ids, coin metadata (`coinType`, `decimals`, or `priceInfoObjectId`), missing price-info object ids, and invalid top-level partner values throw `TypeError`. Correct the affected override or partner before retrying.
 - `owner` accepts a Sui address, SuiNS name, or SuiNS subname in build, dry-run, paired-wallet execute, NFT, wallet, SweetHouse, and referral reads.
@@ -50,7 +50,7 @@ Do not pass explicit coin object ids. The MCP package uses public SDK transactio
 - `build_soccer_transaction`: `owner`, `stake`, `configId`, `countryId`, `shotZoneId`
 - `build_wheel_transaction`: `owner`, `stake`, `configId`
 
-Use `read_game_metadata` before showing or validating live stake limits, RTP, Keno/Plinko/Wheel configs, Soccer configs/countries/shot zones, Range bounds, or non-default `betCount`. MCP rejects `betCount` above the on-chain maximum for Limbo, Plinko, Range, Soccer, and Wheel. Coinflip does not publish a maximum. Keno publishes `max_number_of_games`, but this PR does not include Keno in the MCP bet-count limit table. Validate Keno counts against live parameters before building; do not rely on MCP to reject an excessive count.
+Use `read_game_metadata` before showing or validating live stake limits, RTP, Keno/Plinko/Wheel configs, Soccer configs/countries/shot zones, Range bounds, or non-default `betCount`. MCP rejects `betCount` above the on-chain maximum for Limbo, Plinko, Range, Soccer, and Wheel. Coinflip does not publish a maximum. Keno publishes `max_number_of_games`, but the MCP bet-count limit table does not include Keno. Validate Keno counts against live parameters before building; do not rely on MCP to reject an excessive count.
 
 For natural-language Soccer country requests, match the returned country name in `parameters.countries.contents[].value` and pass its `key` as `countryId`; do not guess an ID or substitute an ISO code.
 

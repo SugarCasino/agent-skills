@@ -18,7 +18,7 @@ import {
 
 ## Game events
 
-Use events from the Sui core API (`SuiClientTypes.Event`), with `eventType`, `module`, and `bcs: Uint8Array`. The current PR types both parser inputs as `SuiClientTypes.Event`. At runtime, `parseGameEvent` reads only `eventType` and `module`, while `parseSugarEvent` also needs BCS bytes to decode a payload. Pass the full typed event in TypeScript; do not cast a minimal envelope to bypass the signature.
+Use events from the Sui core API (`SuiClientTypes.Event`), with `eventType`, `module`, and `bcs: Uint8Array`. The parser signatures accept `SuiClientTypes.Event`. At runtime, `parseGameEvent` reads only `eventType` and `module`, while `parseSugarEvent` also needs BCS bytes to decode a payload. Pass the full typed event in TypeScript; do not cast a minimal envelope to bypass the signature.
 
 Prefer `parseSugarEvent(event)` when the raw Sui event includes BCS bytes. It resolves the supported Sugar `game`, decodes the event payload, and includes decoded `gameDetails` for `BetResultEvent`.
 
@@ -51,7 +51,7 @@ if (parsed?.event === 'BetResultEvent') {
 
 `parseGameEvent(event)` returns `{ game, event }`. Do not use the older `gameId` or `eventName` field names. `parseGameDetails({ game, gameDetails })` decodes known detail keys and preserves on-chain key names.
 
-The current PR's `GameDetails<Game>` mapped type does not distribute over the game union, so generic detail fields may be unavailable to TypeScript. Narrow the outer event with `'gameDetails' in decoded`, confirm the game, and call `parseGameDetails` with a literal identifier for game-specific fields:
+Generic `GameDetails<Game>` fields may be unavailable to TypeScript when the mapped type does not distribute over the game union. Narrow the outer event with `'gameDetails' in decoded`, confirm the game, and call `parseGameDetails` with a literal identifier for game-specific fields:
 
 ```ts
 const decoded = parseSugarEvent(event);
@@ -90,8 +90,6 @@ Known vector detail fields are decoded as arrays: for example, Keno `picks` and 
 
 Parsed `u64` and `u128` game detail values return `bigint` to preserve precision. Convert them to strings or decimal values when displaying them.
 
-## Local parser typing updates awaiting PR inclusion
+## Minimal envelopes and union types
 
-The uncommitted updates from the old skills repo describe minimal typed envelopes and a distributive `GameDetails<Game>` union. When the installed SDK includes these changes, `parseGameEvent` needs only `eventType` and `module`, and `parseSugarEvent` additionally needs BCS bytes. Guard game-specific union fields with a property check such as `'payout_amount' in decoded.gameDetails`, or pass a literal game to `parseGameDetails` for a precise result.
-
-These typing changes are absent from [PR #1 at c9509319](https://github.com/SugarCasino/ts-sdks/pull/1). Until they land, use the full event and literal-game decoding shown above.
+When supported by the installed SDK signatures, `parseGameEvent` needs only `eventType` and `module`, and `parseSugarEvent` additionally needs BCS bytes. Guard game-specific union fields with a property check such as `'payout_amount' in decoded.gameDetails`, or pass a literal game to `parseGameDetails` for a precise result.

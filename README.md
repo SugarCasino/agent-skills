@@ -199,6 +199,16 @@ Render a Suifren with a runner kit and a thumbs-up gesture
 Add Suifrens animation playback and a scripted duel
 ```
 
+## Package releases and compatibility
+
+The public npm packages are `@sugar/sdk`, `@sugar/mcp`, and `@sugar/suifrens-display-system`. This repository distributes skills through the skills CLI; its private package manifest is development tooling and is not published to npm.
+
+The initial workspace in [ts-sdks PR #1](https://github.com/SugarCasino/ts-sdks/pull/1) has package versions `0.0.0` and Changesets beta mode. Public source availability does not mean that an npm release exists. Before installing, check the package's published versions and dist-tags. Use a published exact version or `@beta` for a beta release; use `@latest` only once a stable release is available. Keep an application's existing version pin unless an upgrade is requested.
+
+The npm packages bundle skill entrypoints that fetch full instructions and relative references from `agent-skills/main`. Merge matching skill updates before publishing the SDK packages. Skill metadata versions are independent of npm package versions. See [public release coordination](https://github.com/SugarCasino/.github/blob/main/docs/publication.md).
+
+The skills target the public APIs in [revision c9509319](https://github.com/SugarCasino/ts-sdks/commit/c9509319b8e80edfecd7d7cdb515726d22d6563b). That revision does not export `SUGAR_COINS`, `COIN_SIDES`, or `PVP_COINFLIP_ACTIONS`, and its parser inputs require full `SuiClientTypes.Event` values. Conditional guidance for newer signatures or exports applies only after checking the installed SDK.
+
 ## Development checks
 
 Install dependencies with pnpm:
