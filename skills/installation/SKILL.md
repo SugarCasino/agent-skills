@@ -90,7 +90,7 @@ Use an ESM project (`"type": "module"`) with Node.js `^24.0.0 || ^26.0.0`. Match
 npm install @sugar/sdk @mysten/sui@2 @mysten/bcs@2
 ```
 
-Check npm availability and dist-tags before installation. The initial SDK workspace uses Changesets beta mode: for a published beta, use `npm install @sugar/sdk@beta @mysten/sui@2 @mysten/bcs@2` or a published exact version. The unqualified command above selects `latest` and requires a stable release. A public repository does not establish that a package has been published.
+Check npm availability and dist-tags before installation. The APIs documented here will be available in the next beta release. Once published, use `npm install @sugar/sdk@beta @mysten/sui@2 @mysten/bcs@2` or a published exact version. The unqualified command above selects `latest` and requires a stable release. A public repository does not establish that a package has been published.
 
 Keep the package version your application already requires. These instructions follow the npm packages in `SugarCasino/ts-sdks`. A skill version does not specify an SDK release.
 
@@ -192,14 +192,3 @@ For event parsing, raw generated BCS numeric conversion, and direct BCS event he
 4. Keep transaction creation and serialization on the same extended client instance.
 5. Keep the consuming app on ESM and pass the explicit `network` required by current client constructors.
 6. Route game-specific work to the standard or PvP skill after base setup; use [sweethouse](../sweethouse/SKILL.md) for SweetHouse public pool flows, [sugar-nft](../sugar-nft/SKILL.md) for NFT V1 catalog/ownership/mint flows, [event-parsing](../event-parsing/SKILL.md) for event or raw numeric parsing, and [referrals](../referrals/SKILL.md) for attribution or reward claims.
-
-## Public constants
-
-The initial public SDK at revision `c9509319` does not export `SUGAR_COINS`, `COIN_SIDES`, or `PVP_COINFLIP_ACTIONS`; use `client.sugar.getConfig().coins` for coin keys there. If a later installed SDK exports these constants, use them for coin selectors and input validation:
-
-```ts
-import { sugar, SUGAR_COINS } from '@sugar/sdk';
-import { COIN_SIDES, PVP_COINFLIP_ACTIONS } from '@sugar/sdk/games';
-```
-
-Use `SUGAR_COINS` as the readonly supported coin-key list, with `SugarCoin` derived from its elements. Use `COIN_SIDES` and `PVP_COINFLIP_ACTIONS` for validation and selectors instead of keeping duplicate lists. Verify those exports in the installed SDK before using this example.

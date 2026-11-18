@@ -89,7 +89,3 @@ if (isMoveI64(value)) {
 Known vector detail fields are decoded as arrays: for example, Keno `picks` and `drawn_numbers` are `number[]`, while `payout_amount` is `bigint` and `multiplier` is a JavaScript number. Unknown detail keys fall back to string decoding; they are not automatically interpreted as arbitrary numeric fields. Event `metadata` stays a raw vec-map of bytes and follows the application's own encoding contract.
 
 Parsed `u64` and `u128` game detail values return `bigint` to preserve precision. Convert them to strings or decimal values when displaying them.
-
-## Minimal envelopes and union types
-
-When supported by the installed SDK signatures, `parseGameEvent` needs only `eventType` and `module`, and `parseSugarEvent` additionally needs BCS bytes. Guard game-specific union fields with a property check such as `'payout_amount' in decoded.gameDetails`, or pass a literal game to `parseGameDetails` for a precise result.
