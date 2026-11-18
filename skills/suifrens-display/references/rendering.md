@@ -3,9 +3,9 @@
 ## Imports and attributes
 
 ```tsx
-import { SuiFrenImage } from '@sugar/suifrens-display-system';
-import { SuiFrenImageInline } from '@sugar/suifrens-display-system/image-inline';
-import type { CapyAttributes } from '@sugar/suifrens-display-system/types';
+import { SuiFrenImage } from '@sugarcasino/suifrens-display-system';
+import { SuiFrenImageInline } from '@sugarcasino/suifrens-display-system/image-inline';
+import type { CapyAttributes } from '@sugarcasino/suifrens-display-system/types';
 
 const attributes = {
 	mainColor: 'a17e52',
@@ -43,7 +43,7 @@ Pass catalogue entries or custom `SuiFrenAccessory` objects from `/types` with `
 Import `ACCESSORIES`, `VIP_CROWN_ACCESSORIES` and crown helpers from `/accessories`; import `buildRunnerAccessories`, `resolveRunnerKit`, `SOCCER_TEAM_KITS`, `resolveSoccerCountryCode`, and `resolveSoccerTeamKit` from `/kits`.
 
 ```tsx
-import { buildRunnerAccessories } from '@sugar/suifrens-display-system/kits';
+import { buildRunnerAccessories } from '@sugarcasino/suifrens-display-system/kits';
 
 const outfit = buildRunnerAccessories({ color: '#ec7da6', number: 3, mirrorBib: true });
 // Pass outfit as the image component's accessories array.

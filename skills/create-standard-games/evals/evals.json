@@ -1,6 +1,6 @@
 {
 	"skill_name": "create-standard-games",
-	"source_constraint": "Expected outputs are grounded in @sugar/sdk standard game transaction builders and public Sugar SDK utilities.",
+	"source_constraint": "Expected outputs are grounded in @sugarcasino/sdk standard game transaction builders and public Sugar SDK utilities.",
 	"evals": [
 		{
 			"id": "standard-coinflip-preserve-side",

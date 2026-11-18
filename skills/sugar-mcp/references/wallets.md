@@ -1,6 +1,6 @@
 # MCP wallets specification
 
-Use this specification for `@sugar/mcp` wallet reads, paired browser-wallet approval, and local session-wallet behavior.
+Use this specification for `@sugarcasino/mcp` wallet reads, paired browser-wallet approval, and local session-wallet behavior.
 
 ## Paired browser wallet
 

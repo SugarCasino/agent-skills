@@ -1,6 +1,6 @@
 ---
 name: suifrens-animation
-description: Add Suifrens animation playback, custom part sequences, battle sprites, health bars, and scripted duels using @sugar/suifrens-display-system. Use for animation configuration, iterations, play state, triggers, timing helpers, or useDuelScript attack and victory steps. Static portraits, accessories and gestures belong to suifrens-display.
+description: Add Suifrens animation playback, custom part sequences, battle sprites, health bars, and scripted duels using @sugarcasino/suifrens-display-system. Use for animation configuration, iterations, play state, triggers, timing helpers, or useDuelScript attack and victory steps. Static portraits, accessories and gestures belong to suifrens-display.
 license: MIT
 metadata:
   author: sugar

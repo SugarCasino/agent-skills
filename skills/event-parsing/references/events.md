@@ -13,7 +13,7 @@ import {
 	parseGameDetails,
 	parseGameEvent,
 	parseSugarEvent,
-} from '@sugar/sdk/utils';
+} from '@sugarcasino/sdk/utils';
 ```
 
 ## Game events

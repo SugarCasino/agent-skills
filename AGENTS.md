@@ -38,23 +38,23 @@ The `description` should name the task that calls for the skill: SDK setup, stan
 
 ### Sugar skill boundaries
 
-- Use `installation` for base `@sugar/sdk` setup, client extension wiring, config, serialization, and public exports.
+- Use `installation` for base `@sugarcasino/sdk` setup, client extension wiring, config, serialization, and public exports.
 - Use `event-parsing` for Sugar event decoding, `BetResultEvent.game_details`, generated BCS event helpers, and raw Move float or i64 conversion.
 - Use `create-standard-games` for standard single-player game transactions: `coinflip`, `keno`, `limbo`, `plinko`, `range`, `soccer`, and `wheel`.
 - Use `create-pvp-games` for PvP game flows. Read the specification for the selected game. It currently includes `references/pvp-coinflip.md` for create, join, cancel, lobby listing, and object/event parsing. Add another specification when a new PvP game is supported.
 - Use `sugar-nft` for application-side NFT V1 ownership, catalog lookups, and mint transaction building using SDK-resolved package/object ids, BCS helpers, and `client.sugar.tx.nftV1.mint`.
 - Use `sweethouse` for public pool deposits, redeem requests, and delayed self-claims.
 - Use `referrals` for SDK partner attribution and referral reward claims.
-- Use `sugar-mcp` for installing, configuring, operating, or troubleshooting the `@sugar/mcp` server, bundled MCP App, or its Codex, Claude Code, and Cursor plugin bundle.
+- Use `sugar-mcp` for installing, configuring, operating, or troubleshooting the `@sugarcasino/mcp` server, bundled MCP App, or its Codex, Claude Code, and Cursor plugin bundle.
 - Use `suifrens-display` for character rendering, accessories, kits, gestures, SVG exports and the Fastify SVG/PNG example.
 - Use `suifrens-animation` for playback, custom sequences, battle sprites and duel scripts. Keep presentation separate from on-chain outcomes.
-- Keep SDK and MCP guidance separate. MCP skills should describe tool usage, read-only/build/dry-run modes, and unsigned transaction behavior. SDK skills should describe application code that imports `@sugar/sdk`.
+- Keep SDK and MCP guidance separate. MCP skills should describe tool usage, read-only/build/dry-run modes, and unsigned transaction behavior. SDK skills should describe application code that imports `@sugarcasino/sdk`.
 
 ### Context efficiency
 
 - Keep each `SKILL.md` concise and under 500 lines.
 - Move detailed reference material to directly linked files under `references/`.
-- Prefer public Sugar imports: `@sugar/sdk`, `@sugar/sdk/games`, and `@sugar/sdk/utils`.
+- Prefer public Sugar imports: `@sugarcasino/sdk`, `@sugarcasino/sdk/games`, and `@sugarcasino/sdk/utils`.
 - Include SDK internals only when they help explain how to use a public API.
 - Do not add README files inside individual skills.
 

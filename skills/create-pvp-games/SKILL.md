@@ -1,6 +1,6 @@
 ---
 name: create-pvp-games
-description: Build, scaffold, review, or fix Sugar PvP game flows using @sugar/sdk. Use when selecting the correct PvP game specification, designing shared PvP lobby or event-handling architecture, or adding a supported PvP game flow. For PvP Coinflip create, join, cancel, lobby, parameter, object, or event work, read references/pvp-coinflip.md.
+description: Build, scaffold, review, or fix Sugar PvP game flows using @sugarcasino/sdk. Use when selecting the correct PvP game specification, designing shared PvP lobby or event-handling architecture, or adding a supported PvP game flow. For PvP Coinflip create, join, cancel, lobby, parameter, object, or event work, read references/pvp-coinflip.md.
 license: MIT
 metadata:
   author: sugar
@@ -15,7 +15,7 @@ metadata:
 
 # Create Sugar PvP games
 
-Use this skill for application code that imports `@sugar/sdk` and works with PvP games. If the user is using MCP tools instead, use `sugar-mcp`.
+Use this skill for application code that imports `@sugarcasino/sdk` and works with PvP games. If the user is using MCP tools instead, use `sugar-mcp`.
 
 ## Workflow
 

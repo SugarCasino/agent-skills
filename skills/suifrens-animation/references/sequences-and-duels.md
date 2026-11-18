@@ -5,7 +5,7 @@ Import `AnimationPresetName` from `/types` to validate built-in core and battle 
 ## Custom part animation
 
 ```ts
-import type { AnimationSequence } from '@sugar/suifrens-display-system/types';
+import type { AnimationSequence } from '@sugarcasino/suifrens-display-system/types';
 
 const nod = {
 	name: 'nod',
@@ -31,7 +31,7 @@ Sequence duration and keyframe `at` values use milliseconds. Parts are `body`, `
 Import `useDuelScript`, `SuiFrenBattleSprite`, and `MinecraftHealthBar` from `/battle`. Import `DuelScript`, `DuelAttackStep`, and component/hook types from `/types`.
 
 ```ts
-import type { DuelScript } from '@sugar/suifrens-display-system/types';
+import type { DuelScript } from '@sugarcasino/suifrens-display-system/types';
 
 const script = {
 	name: 'Demo duel',
