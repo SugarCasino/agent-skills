@@ -30,6 +30,8 @@ The root exports only `SuiFrenImage`, `CapyImage`, and `BullsharkImage`. All pub
 
 Use palette keys from `COLORS` in `/colors`, without a leading `#`, for `mainColor` and `secondaryColor`. Write hexadecimal color literals in lowercase, including values without `#`. Use `SUIFREN_SKINS` and `EAR_GENE_TO_EAR_SHAPE` from `/attributes`, and `ALL_EXPRESSIONS`, `POSITIVE_EXPRESSIONS`, or `NEGATIVE_EXPRESSIONS` from `/expressions`. Both species share `SuiFrenSkin` and `SuiFrenExpression` types. Import `SuiFrenAppearance` from `/types` for their shared color, skin and expression fields. Preserve the original spelling of catalogue values.
 
+Both React image renderers hide the ground shadow by default. Pass the boolean `shadow` prop to show it. For an animated image, the selected sequence controls how the visible shadow moves. The Fastify HTTP example enables shadows by default.
+
 ## External assets and SVG exports
 
 The root renderer uses cacheable external accessory SVGs. The `/image-inline` entry embeds catalogue artwork and is the choice for standalone SVG markup. Server-side static markup does not run animation effects.

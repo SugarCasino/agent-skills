@@ -26,6 +26,16 @@ const nod = {
 
 Sequence duration and keyframe `at` values use milliseconds. Parts are `body`, `head`, `leftArm`, `rightArm`, `leftLeg`, `rightLeg`, `tail`, and `fin`. Check the species' registered parts before relying on a tail or fin. Pose values support rotation, translation and scale. Keep animation in the library's part system so attached accessories follow the appropriate body parts.
 
+## Ground shadows
+
+Enable the boolean `shadow` prop on the image, for example `<SuiFrenImage attributes={attributes} shadow animation={{ preset: 'jump' }} />`. A built-in preset supplies its own shadow behavior. For a custom sequence, check that the installed package exposes `AnimationSequence.shadow` in `/types`, then set the field on the sequence. Its public type is `AnimationShadow`.
+
+| Sequence value | Behavior with the image shadow enabled | Examples |
+| --- | --- | --- |
+| `'static'` (default) | Keeps the standing footprint at its usual size and position. | Custom sequences that omit the field |
+| `'falling'` | Projects the moving body onto the ground as it rotates into the landing pose. | `death`, `death2`, `death3` |
+| `'airborne'` | Shrinks and fades the footprint as the body rises. Animate negative `translate.y` on the `body` track and return to zero on landing. | `jump`, `walkJumpSit` |
+
 ## Duels
 
 Import `useDuelScript`, `SuiFrenBattleSprite`, and `MinecraftHealthBar` from `/battle`. Import `DuelScript`, `DuelAttackStep`, and component/hook types from `/types`.

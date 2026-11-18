@@ -30,6 +30,24 @@
 				"Does not require an animation timeline or provider for a static gesture",
 				"Notes that head-only portraits ignore the gesture"
 			]
+		},
+		{
+			"id": "suifrens-animation-jump-shadow",
+			"prompt": "My custom hop moves the head up, but its shadow never shrinks. How should I configure the image and the sequence, and what should move during the jump?",
+			"assertions": [
+				"Enables the boolean shadow prop on the image",
+				"Sets shadow to airborne on the custom sequence",
+				"Animates negative translate.y on the body track and returns it to zero on landing"
+			]
+		},
+		{
+			"id": "suifrens-animation-death-preview",
+			"prompt": "Storybook repeats Death (Alt 3). In my game I want that fall to play once and stay down with its ground shadow. What props do I need?",
+			"assertions": [
+				"Uses preset death3 and enables the image shadow",
+				"Uses one iteration explicitly or by default and sets holdOnComplete to true",
+				"Explains that looping belongs to the preview and the preset supplies falling shadow behavior"
+			]
 		}
 	]
 }
