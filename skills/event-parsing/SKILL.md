@@ -4,7 +4,7 @@ description: Parse Sugar SDK events and raw generated numeric values. Use when d
 license: MIT
 metadata:
   author: sugar
-  version: '1.1.0'
+  version: '1.0.0'
   short-description: Parse Sugar events
   tags:
     - sugar
@@ -15,7 +15,7 @@ metadata:
 
 # Sugar event parsing
 
-Use this skill for application code that imports `@sugarcasino/sdk` and parses Sugar events or raw generated numeric structs. If the task is only SDK setup, use `installation` first. If the user is using `@sugarcasino/mcp` tool output, use `sugar-mcp` instead.
+Use this skill for application code that imports `@sugar/sdk` and parses Sugar events or raw generated numeric structs. If the task is only SDK setup, use `installation` first. If the user is using `@sugar/mcp` tool output, use `sugar-mcp` instead.
 
 Use public SDK utilities and generated BCS helpers. Do not hand-decode `BetResultEvent.game_details` or copy SDK numeric struct guards into app code.
 

@@ -1,10 +1,10 @@
 ---
 name: installation
-description: Set up, scaffold, or fix the base @sugarcasino/sdk integration for Sugar apps on Sui. Use when installing the v2 SDK with the current Mysten Sui TypeScript SDK, wiring the sugar() Sui client extension, configuring networks, NFT V1 package id, object ids or coin metadata, serializing transactions, reading SDK config or live game parameters, using public exports, or managing SDK cache reset behavior. Use this before standard, PvP, SweetHouse, referral, NFT, or event parsing skills when the client setup is missing or questionable.
+description: Set up, scaffold, or fix the base @sugar/sdk integration for Sugar apps on Sui. Use when installing the v2 SDK with the current Mysten Sui TypeScript SDK, wiring the sugar() Sui client extension, configuring networks, NFT V1 package id, object ids or coin metadata, serializing transactions, reading SDK config or live game parameters, using public exports, or managing SDK cache reset behavior. Use this before standard, PvP, SweetHouse, referral, NFT, or event parsing skills when the client setup is missing or questionable.
 license: MIT
 metadata:
   author: sugar
-  version: '1.10.1'
+  version: '1.0.0'
   short-description: Set up the Sugar SDK
   tags:
     - sugar
@@ -15,16 +15,16 @@ metadata:
 
 # Sugar SDK installation
 
-Use this skill for application code that imports `@sugarcasino/sdk`. If the task is about installing, configuring, operating, or troubleshooting `@sugarcasino/mcp`, its bundled MCP App, or its plugin bundle, use the `sugar-mcp` skill instead.
+Use this skill for application code that imports `@sugar/sdk`. If the task is about installing, configuring, operating, or troubleshooting `@sugar/mcp`, its bundled MCP App, or its plugin bundle, use the `sugar-mcp` skill instead.
 
-For `@sugarcasino/suifrens-display-system`, use [suifrens-display](../suifrens-display/SKILL.md) for rendering and [suifrens-animation](../suifrens-animation/SKILL.md) for playback or duels. Character rendering does not require registering `sugar()` on a Sui client.
+For `@sugar/suifrens-display-system`, use [suifrens-display](../suifrens-display/SKILL.md) for rendering and [suifrens-animation](../suifrens-animation/SKILL.md) for playback or duels. Character rendering does not require registering `sugar()` on a Sui client.
 
-Prefer public Sugar SDK entrypoints and installed package documentation or source when available. Do not guess private exports or copy internal helpers into app code.
+Use the public Sugar SDK entrypoints. Check the installed package documentation or source before choosing an unfamiliar API; keep private exports and internal helpers out of app code.
 
 ## Default workflow
 
 1. Confirm the app already uses the current Mysten Sui client APIs.
-2. Install or verify `@sugarcasino/sdk`, `@mysten/sui`, and `@mysten/bcs`, matching the SDK package's Node.js and peer dependency requirements.
+2. Install or verify `@sugar/sdk`, `@mysten/sui`, and `@mysten/bcs`, matching the SDK package's Node.js and peer dependency requirements.
 3. Extend the existing Sui client with `sugar()`.
 4. Keep all Sugar transaction creation and serialization on that extended client instance.
 5. Use `client.sugar.getConfig()` for supported coins, object ids, NFT V1 package id, and price info when the UI or diagnostics need resolved config.
@@ -32,24 +32,26 @@ Prefer public Sugar SDK entrypoints and installed package documentation or sourc
 
 ## Public surface
 
-SDK-owned optional extension fields (`config`, `partner`, and `cacheTtl`) accept explicit `undefined`, including with `exactOptionalPropertyTypes`. An undefined field behaves like an omitted option; nested configuration overrides still require valid configured values.
+Optional extension fields (`config`, `partner`, and `cacheTtl`) accept explicit `undefined`, including with `exactOptionalPropertyTypes`. This behaves like leaving the option out. Any values supplied in nested config overrides must still be valid.
 
 The package exposes these public entrypoints:
 
-- `@sugarcasino/sdk`
-- `@sugarcasino/sdk/games`
-- `@sugarcasino/sdk/utils`
+- `@sugar/sdk`
+- `@sugar/sdk/games`
+- `@sugar/sdk/utils`
 
 Use these public imports:
 
 ```ts
-import { sugar } from '@sugarcasino/sdk';
-import type { SugarCoin, SugarNetwork } from '@sugarcasino/sdk';
-import { GAMES, type PvPGame, type StandardGame } from '@sugarcasino/sdk/games';
-import { parseCoinType, toBigInt, toU8, toU16, toU32 } from '@sugarcasino/sdk/utils';
+import { sugar } from '@sugar/sdk';
+import type { SugarCoin, SugarNetwork } from '@sugar/sdk';
+import { GAMES, type PvPGame, type StandardGame } from '@sugar/sdk/games';
+import { parseCoinType, toBigInt, toU8, toU16, toU32 } from '@sugar/sdk/utils';
 ```
 
-The package root exposes `sugar`, `SugarClient`, `SUPPORTED_SUI_NETWORKS`, `SugarCoin`, and `SugarNetwork`. Game ids and game-specific option types live in `@sugarcasino/sdk/games`. Parser and numeric helpers live in `@sugarcasino/sdk/utils`.
+The package root exposes `sugar`, `SugarClient`, `SUPPORTED_SUI_NETWORKS`, `SugarCoin`, and `SugarNetwork`. Game ids and game-specific option types live in `@sugar/sdk/games`. Parser and numeric helpers live in `@sugar/sdk/utils`.
+
+For a coin selector, read keys and metadata from `client.sugar.getConfig().coins`. The current PR does not export `SUGAR_COINS`, `COIN_SIDES`, or `PVP_COINFLIP_ACTIONS`; keep those imports out of code targeting this PR.
 
 Use these game-specific public types when useful: `GAMES`, `Game`, `StandardGame`, `PvPGame`, `CoinSide`, `PvPCoinflipAction`, `CreateGameBetOptions`, `CoinflipTransactionOptions`, `KenoTransactionOptions`, `LimboTransactionOptions`, `PlinkoTransactionOptions`, `RangeTransactionOptions`, `SoccerTransactionOptions`, `WheelTransactionOptions`, `CreatePvPCoinflipTransactionOptions`, `JoinPvPCoinflipTransactionOptions`, and `CancelPvPCoinflipTransactionOptions`.
 
@@ -63,7 +65,7 @@ Utility behavior:
 - `parseCoinType(type)` extracts the normalized first generic coin type from a Move object type string.
 - Event parsing, `parseGameDetails`, and raw Move float/i64 conversion belong in [event-parsing](../event-parsing/SKILL.md).
 
-Do not import individual runtime game builders from `@sugarcasino/sdk`. Use the registered extension:
+Do not import individual runtime game builders from `@sugar/sdk`. Use the registered extension:
 
 ```ts
 client.sugar.tx.createGameBet({ game, ...options });
@@ -82,21 +84,21 @@ client.sugar.serializeTransactionToBase64({ transaction: tx });
 
 ## Runtime and installation
 
-Use an ESM project (`"type": "module"`) with Node.js `^24.0.0 || ^26.0.0`. Match the installed SDK's peer dependency ranges for `@mysten/sui@2` and `@mysten/bcs@2`; pre-2.0 Sui clients are unsupported. The v2 surface is currently published as a beta:
+Use an ESM project (`"type": "module"`) with Node.js `^24.0.0 || ^26.0.0`. Match the installed SDK's peer dependency ranges for `@mysten/sui@2` and `@mysten/bcs@2`; pre-2.0 Sui clients are unsupported. Install the SDK through npm:
 
 ```bash
-npm install @sugarcasino/sdk@beta @mysten/sui@2 @mysten/bcs@2
+npm install @sugar/sdk @mysten/sui@2 @mysten/bcs@2
 ```
 
-Use the package version required by the application when it is already pinned. The SDK is also available through JSR (`pnpm add jsr:@sugarcasino/sdk`).
+Keep the package version your application already requires. These instructions follow the npm packages in `SugarCasino/ts-sdks`. A skill version does not specify an SDK release.
 
 ## Client setup
 
-Prefer the Sui gRPC client extension pattern:
+Extend the Sui gRPC client:
 
 ```ts
 import { SuiGrpcClient } from '@mysten/sui/grpc';
-import { sugar } from '@sugarcasino/sdk';
+import { sugar } from '@sugar/sdk';
 
 const client = new SuiGrpcClient({
 	baseUrl: 'https://fullnode.testnet.sui.io:443',
@@ -139,7 +141,7 @@ const client = new SuiGrpcClient({ baseUrl, network }).$extend(
 
 ## Serialization
 
-Serialize only when a wallet, backend, or transport path needs unsigned bytes:
+Serialize the transaction when the wallet, backend, or transport needs unsigned bytes:
 
 ```ts
 const tx = client.sugar.tx.createGameBet({
@@ -172,7 +174,7 @@ For event parsing, raw generated BCS numeric conversion, and direct BCS event he
 - The resolved `coins` dictionary has a null prototype. Use `Object.hasOwn(coins, key)` for key checks; `Object.keys()`, `Object.values()` and JSON serialization work as usual.
 - Prefer SDK-resolved supported coin metadata from `client.sugar.getConfig()` for debugging, inspection, or UI coin selectors; simple examples can pass the expected coin type directly.
 - Standard games resolve the price-info object id from the selected coin's `priceInfoObjectId` metadata.
-- `packageIds.nftV1` is configured by network because it is not resolved from MVR. Generated game, referral, and core bindings use `@sugarcasino/*` MVR names by default, with optional `packageIds` entries for explicit package overrides. Use `objectIds` for singleton objects such as `sweetHouse` and `nftV1Factory`.
+- `packageIds.nftV1` is configured by network because it is not resolved from MVR. Generated game, referral, and core bindings currently use `@suigar/*` MVR names by default, with optional `packageIds` entries for explicit package overrides. These on-chain names are independent of the npm `@sugar/*` scope; verify installed bindings before overriding them. Use `objectIds` for singleton objects such as `sweetHouse` and `nftV1Factory`.
 - Use `client.sugar.getConfig().packageIds.nftV1` and `objectIds.nftV1Factory` for NFT V1 catalog, ownership, and mint flows; use [sugar-nft](../sugar-nft/SKILL.md) for that flow.
 - Use [sweethouse](../sweethouse/SKILL.md) for public pool deposits, redeem requests, and delayed redeem-request claims. Those builders live under `client.sugar.tx.sweetHouse` and are not standard game bets.
 - Use `SugarCoin` and `SugarNetwork` when app code needs supported coin or network types.
@@ -182,9 +184,20 @@ For event parsing, raw generated BCS numeric conversion, and direct BCS event he
 
 ## Implementation checklist
 
-1. Install and import `@sugarcasino/sdk`, `@mysten/sui`, and `@mysten/bcs`.
+1. Install and import `@sugar/sdk`, `@mysten/sui`, and `@mysten/bcs`.
 2. Extend the current Sui client with `sugar()`.
 3. Confirm the client uses the intended supported network.
 4. Keep transaction creation and serialization on the same extended client instance.
 5. Keep the consuming app on ESM and pass the explicit `network` required by current client constructors.
 6. Route game-specific work to the standard or PvP skill after base setup; use [sweethouse](../sweethouse/SKILL.md) for SweetHouse public pool flows, [sugar-nft](../sugar-nft/SKILL.md) for NFT V1 catalog/ownership/mint flows, [event-parsing](../event-parsing/SKILL.md) for event or raw numeric parsing, and [referrals](../referrals/SKILL.md) for attribution or reward claims.
+
+## Local SDK updates awaiting PR inclusion
+
+The uncommitted updates carried over from the old skills repo describe these additional exports:
+
+```ts
+import { sugar, SUGAR_COINS } from '@sugar/sdk';
+import { COIN_SIDES, PVP_COINFLIP_ACTIONS } from '@sugar/sdk/games';
+```
+
+Once the SDK exports them, use `SUGAR_COINS` as the readonly supported coin-key list, with `SugarCoin` derived from its elements. Use `COIN_SIDES` and `PVP_COINFLIP_ACTIONS` for validation and selectors instead of keeping duplicate lists. Verify those exports in the installed SDK before using this example. They are absent from [PR #1 at c9509319](https://github.com/SugarCasino/ts-sdks/pull/1), the revision checked for this skill.

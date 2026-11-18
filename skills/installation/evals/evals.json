@@ -1,23 +1,23 @@
 {
 	"skill_name": "installation",
-	"source_constraint": "Expected outputs are grounded in the Sugar SDK public API, the installed @sugarcasino/sdk package surface, and current Mysten Sui TypeScript client patterns.",
+	"source_constraint": "Expected outputs are grounded in the Sugar SDK public API, the installed @sugar/sdk package surface, and current Mysten Sui TypeScript client patterns.",
 	"evals": [
 		{
 			"id": "installation-grpc-extension-setup",
-			"prompt": "Set up @sugarcasino/sdk in my Node app using the current Sui TypeScript SDK. I need a testnet client and a coinflip transaction serialized to base64 for the wallet.",
+			"prompt": "Set up @sugar/sdk in my Node app using the current Sui TypeScript SDK. I need a testnet client and a coinflip transaction serialized to base64 for the wallet.",
 			"expected_output": "Shows SuiGrpcClient from @mysten/sui/grpc extended with sugar(), builds a coinflip transaction through client.sugar.tx.createGameBet({ game: 'coinflip', ... }), and serializes it with client.sugar.serializeTransactionToBase64({ transaction }).",
 			"sources": [
 				"https://github.com/SugarCasino/agent-skills/tree/main/skills/installation",
 				"https://sdk.mystenlabs.com/sui"
 			],
 			"assertions": [
-				"Imports sugar from @sugarcasino/sdk",
+				"Imports sugar from @sugar/sdk",
 				"Imports SuiGrpcClient from @mysten/sui/grpc",
 				"Constructs the client with both baseUrl and network",
 				"Extends the client with sugar()",
 				"Uses client.sugar.tx.createGameBet with game: 'coinflip' for the bet",
 				"Uses client.sugar.serializeTransactionToBase64 with a transaction option for serialization",
-				"Does not import a standalone coinflip builder from @sugarcasino/sdk"
+				"Does not import a standalone coinflip builder from @sugar/sdk"
 			]
 		},
 		{
@@ -45,7 +45,7 @@
 		{
 			"id": "installation-currency-and-runtime",
 			"prompt": "Set up the v2 SDK in a new Node application. Can I pass toBigInt(1.5) as the stake for 1.5 SUI?",
-			"expected_output": "Uses the beta SDK with Sui 2 and BCS 2 in an ESM app on supported Node, explains that toBigInt truncates rather than scaling currency, and uses 1500000000n for 1.5 SUI.",
+			"expected_output": "Uses the SDK with Sui 2 and BCS 2 in an ESM app on supported Node, explains that toBigInt truncates rather than scaling currency, and uses 1500000000n for 1.5 SUI.",
 			"sources": ["https://github.com/SugarCasino/agent-skills/tree/main/skills/installation"],
 			"assertions": [
 				"Specifies Node.js ^24.0.0 || ^26.0.0 and ESM",

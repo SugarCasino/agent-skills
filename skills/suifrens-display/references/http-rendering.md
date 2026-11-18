@@ -9,7 +9,7 @@ From the ts-sdks repository root, use its Node.js and pnpm versions:
 ```bash
 pnpm install
 pnpm --dir packages/suifrens-display-system run build
-pnpm --filter @sugarcasino/suifrens-fastify dev --network testnet
+pnpm --filter @sugar/suifrens-fastify dev --network testnet
 ```
 
 The server listens on port 3000. Reuse a running instance if it already has the required configuration. Only `mainnet` and `testnet` are supported; omitting `--network` selects mainnet. Watch restarts preserve the network choice. No wallet, private key, database or `.env` is needed. Suifren reads require access to the public Sui fullnode over gRPC.
@@ -34,7 +34,7 @@ Use the individual NFT's full object ID from the selected network for `:suifrenI
 | `logo`    | SVG and PNG | omitted | `sui` or `sugar`; omit for no logo                           |
 | `shadow`  | SVG and PNG | `true`  | `true` or `false` to show or hide the shadow                 |
 
-Defaults apply to both accessories and Suifrens. PNG backgrounds are transparent. SVG responses use `image/svg+xml`; PNG responses use `image/png`.
+Defaults apply to both accessories and Suifrens. Boolean logo values such as `logo=false` and `logo=true` return `400`; omit the parameter for no logo. PNG backgrounds are transparent. SVG responses use `image/svg+xml`; PNG responses use `image/png`.
 
 ```text
 http://localhost:3000/accessories/soccer%20team%20shirt/png?width=512&shadow=false

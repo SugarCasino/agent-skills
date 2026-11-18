@@ -1,16 +1,16 @@
 {
 	"skill_name": "sugar-mcp",
-	"source_constraint": "Expected outputs are grounded in @sugarcasino/mcp behavior as a thin unsigned-transaction layer over @sugarcasino/sdk.",
+	"source_constraint": "Expected outputs are grounded in @sugar/mcp behavior as a thin unsigned-transaction layer over @sugar/sdk.",
 	"evals": [
 		{
 			"id": "mcp-install-config",
 			"prompt": "Add the Sugar MCP server to my MCP client config. What JSON should I paste and what do I do after?",
-			"expected_output": "Recommends `npx add-mcp @sugarcasino/mcp@beta --name sugar` for detected coding agents, or provides an mcpServers.sugar config using command npx and args ['-y', '@sugarcasino/mcp@beta'] when explicit manual configuration is needed.",
+			"expected_output": "Recommends `npx add-mcp @sugar/mcp@latest --name sugar` for detected coding agents, or provides an mcpServers.sugar config using command npx and args ['-y', '@sugar/mcp@latest'] when explicit manual configuration is needed.",
 			"sources": ["https://github.com/SugarCasino/agent-skills/tree/main/skills/sugar-mcp"],
 			"assertions": [
-				"Uses npx add-mcp @sugarcasino/mcp@beta --name sugar or explicitly scopes the answer to manual MCP configuration",
+				"Uses npx add-mcp @sugar/mcp@latest --name sugar or explicitly scopes the answer to manual MCP configuration",
 				"When showing manual configuration, includes an mcpServers object with key sugar",
-				"When showing manual configuration, uses command: npx and args containing -y and @sugarcasino/mcp@beta",
+				"When showing manual configuration, uses command: npx and args containing -y and @sugar/mcp@latest",
 				"Tells the user to restart or reload the MCP client after config changes",
 				"Does not claim installation alone signs transactions or creates a session wallet"
 			]

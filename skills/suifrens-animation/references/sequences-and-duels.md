@@ -5,7 +5,7 @@ Import `AnimationPresetName` from `/types` to validate built-in core and battle 
 ## Custom part animation
 
 ```ts
-import type { AnimationSequence } from '@sugarcasino/suifrens-display-system/types';
+import type { AnimationSequence } from '@sugar/suifrens-display-system/types';
 
 const nod = {
 	name: 'nod',
@@ -31,7 +31,7 @@ Sequence duration and keyframe `at` values use milliseconds. Parts are `body`, `
 Import `useDuelScript`, `SuiFrenBattleSprite`, and `MinecraftHealthBar` from `/battle`. Import `DuelScript`, `DuelAttackStep`, and component/hook types from `/types`.
 
 ```ts
-import type { DuelScript } from '@sugarcasino/suifrens-display-system/types';
+import type { DuelScript } from '@sugar/suifrens-display-system/types';
 
 const script = {
 	name: 'Demo duel',
@@ -52,6 +52,6 @@ The attack target is always the opposite fighter. Do not supply an explicit targ
 
 Call `useDuelScript({ script, baseExpression: { left: 'happy', right: 'happy' }, ...options })` in a React component. It returns `{ state, restart, stop, reset }`. Stabilize scripts and option objects when appropriate so a render does not unintentionally restart an effect.
 
-Use `state.left` and `state.right` as the source of each fighter's health, maximum health, expression and animation. Pass those to the battle sprite with the matching attributes. Keep a single health state rather than independently decrementing the health bar. The hook models a presentation script; it does not determine on-chain game outcomes. If a real result drives the scene, derive the script from that verified result.
+Use `state.left` and `state.right` as the source of each fighter's health, maximum health, expression and animation. Pass those to the battle sprite with the matching attributes. Use that same health state for the health bar. The hook controls the scene's animation. For scenes that show an on-chain game result, build the script from the verified result; the animation cannot determine the outcome.
 
 `SuiFrenBattleSprite` owns its inline renderer, facing transform and health bar. Its API does not automatically accept every `SuiFrenImage` prop. Check its declared props before adding accessories or gestures to a battle sprite. Use `hitFlashTrigger` for repeated hit flashes without remounting the animated fighter.

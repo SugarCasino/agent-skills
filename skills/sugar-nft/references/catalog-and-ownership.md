@@ -30,7 +30,7 @@ const specs = factory.specs.contents.map(({ value }) => ({
 }));
 ```
 
-Preserve the BCS field names when the product needs the full catalog. Convert `u64` fields such as `price`, `supply`, and `available` only at the presentation boundary.
+Preserve the BCS field names when the product needs the full catalog. Convert `u64` fields such as `price`, `supply`, and `available` when displaying them.
 
 ## Ownership lookup
 
@@ -52,7 +52,7 @@ const nfts = page.objects.map((object) => {
 });
 ```
 
-Use the returned objects as the ownership source of truth. Use `page.hasNextPage` to decide whether to request another page and pass `page.cursor` into that request when the product needs the full collection. Do not stop solely because a page contains no matching objects. Parse `content` with `NftV1`; do not rely on `objectBcs` for object reads.
+Determine ownership from the returned objects. Use `page.hasNextPage` to decide whether to request another page and pass `page.cursor` into that request when the product needs the full collection. Do not stop solely because a page contains no matching objects. Parse `content` with `NftV1`; do not rely on `objectBcs` for object reads.
 
 ## Boundaries
 

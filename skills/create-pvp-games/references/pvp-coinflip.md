@@ -1,6 +1,6 @@
 # PvP Coinflip specification
 
-Use this specification for application code that imports `@sugarcasino/sdk` and builds PvP Coinflip. If the user is using MCP tools instead of SDK code, use `sugar-mcp`; the MCP create input is `creatorSide`, which maps to SDK `side`.
+Use this specification for application code that imports `@sugar/sdk` and builds PvP Coinflip. If the user is using MCP tools instead of SDK code, use `sugar-mcp`; the MCP create input is `creatorSide`, which maps to SDK `side`.
 
 Use the SDK PvP Coinflip builders, BCS helpers, and registry lookup behavior. Do not adapt standard bet builders for PvP.
 
@@ -28,7 +28,7 @@ client.sugar.tx.pvpCoinflip.cancelGame(options);
 client.sugar.bcs.PvPCoinflipGame;
 ```
 
-Use `PvPCoinflipAction` and `PvPGame` from `@sugarcasino/sdk/games` when app code needs typed action or game values.
+Use `PvPCoinflipAction` and `PvPGame` from `@sugar/sdk/games` when app code needs typed action or game values.
 
 ## Actions
 
@@ -102,7 +102,7 @@ Keep cancellation tied to the on-chain `gameId`; do not reuse create or join pay
 - The method returns an array for one registry page, without a next-page cursor or `hasNextPage`. Do not invent a `games.cursor` property or treat an empty parsed array as proof that no further registry entries exist; per-object failures can remove entries from the result.
 
 ```ts
-import { DEFAULT_QUERY_LIMIT } from '@sugarcasino/sdk/utils';
+import { DEFAULT_QUERY_LIMIT } from '@sugar/sdk/utils';
 
 const games = await client.sugar.getPvPCoinflipGames({
 	limit: DEFAULT_QUERY_LIMIT,

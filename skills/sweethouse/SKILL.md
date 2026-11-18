@@ -1,10 +1,10 @@
 ---
 name: sweethouse
-description: Build, scaffold, review, or fix Sugar SweetHouse public pool flows using @sugarcasino/sdk. Use when depositing into SweetHouse, minting staked coins, creating redeem requests from staked coins, claiming a delayed own redeem request, decoding SweetHouse redeem events, or keeping SweetHouse liquidity flows separate from standard game, PvP, referral, NFT, or MCP APIs.
+description: Build, scaffold, review, or fix Sugar SweetHouse public pool flows using @sugar/sdk. Use when depositing into SweetHouse, minting staked coins, creating redeem requests from staked coins, claiming a delayed own redeem request, decoding SweetHouse redeem events, or keeping SweetHouse liquidity flows separate from standard game, PvP, referral, NFT, or MCP APIs.
 license: MIT
 metadata:
   author: sugar
-  version: '1.1.1'
+  version: '1.0.0'
   short-description: Build SweetHouse pool flows
   tags:
     - sugar
@@ -15,7 +15,7 @@ metadata:
 
 # Sugar SweetHouse
 
-Use this skill for application code that imports `@sugarcasino/sdk` and builds SweetHouse public pool transactions. If the app has not configured the SDK client yet, use `installation` first. If the user is using `@sugarcasino/mcp` tools, use `sugar-mcp` instead.
+Use this skill for application code that imports `@sugar/sdk` and builds SweetHouse public pool transactions. If the app has not configured the SDK client yet, use `installation` first. If the user is using `@sugar/mcp` tools, use `sugar-mcp` instead.
 
 Use `client.sugar.tx.sweetHouse`. Do not hand-write `core::sweethouse` Move calls, hard-code SweetHouse object ids, or route deposits and redeem requests through game bet builders.
 
@@ -30,7 +30,7 @@ Use `client.sugar.tx.sweetHouse`. Do not hand-write `core::sweethouse` Move call
 
 ## Transaction builders
 
-SweetHouse exposes three public pool builders:
+The public pool has three transaction builders:
 
 - `client.sugar.tx.sweetHouse.deposit(options)`
 - `client.sugar.tx.sweetHouse.redeemRequest(options)`
@@ -40,7 +40,7 @@ Read [references/public-pool.md](references/public-pool.md) for required inputs,
 
 ## Gotchas
 
-- SweetHouse flows use `amount`, not `stake`, because they are pool liquidity transactions rather than game bets.
+- Pass pool liquidity amounts as `amount`. The `stake` field belongs to game bets.
 - Use base-unit `bigint` amounts once values leave the UI layer.
 - Do not use `client.sugar.tx.createGameBet` for deposits, redeem requests, or delayed claims.
 - Do not use referral or NFT builders for SweetHouse liquidity flows.

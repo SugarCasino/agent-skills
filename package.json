@@ -1,5 +1,5 @@
 {
-	"name": "@sugarcasino/agent-skills",
+	"name": "@sugar/agent-skills",
 	"private": true,
 	"license": "MIT",
 	"author": "Sugar Casino",
@@ -7,6 +7,7 @@
 	"scripts": {
 		"prepare": "husky",
 		"validate": "node scripts/validate-skills.mjs",
+		"test": "node --test scripts/*.test.mjs",
 		"eval": "node scripts/run-evals.mjs",
 		"eval:changed": "node scripts/run-evals.mjs --changed-only",
 		"oxlint": "oxlint .",

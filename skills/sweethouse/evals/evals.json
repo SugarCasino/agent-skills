@@ -1,6 +1,6 @@
 {
 	"skill_name": "sweethouse",
-	"source_constraint": "Expected outputs are grounded in @sugarcasino/sdk SweetHouse transaction builders and public SDK configuration/BCS helpers.",
+	"source_constraint": "Expected outputs are grounded in @sugar/sdk SweetHouse transaction builders and public SDK configuration/BCS helpers.",
 	"evals": [
 		{
 			"id": "sweethouse-deposit",

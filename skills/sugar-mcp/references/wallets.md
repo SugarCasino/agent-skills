@@ -1,10 +1,10 @@
 # MCP wallets specification
 
-Use this specification for `@sugarcasino/mcp` wallet reads, paired browser-wallet approval, and local session-wallet behavior.
+Use this specification for `@sugar/mcp` wallet reads, paired browser-wallet approval, and local session-wallet behavior.
 
 ## Paired browser wallet
 
-Use these tools for browser-mediated wallet pairing:
+Pair a browser wallet with these tools:
 
 - `sugar_login`
 - `sugar_logout`
@@ -29,7 +29,7 @@ Use these tools for persistent local session wallets:
 
 `setup_session_wallet` opens a local, user-only setup page to create or recover a persistent session wallet. Recovery phrases and imported `suiprivkey...` values stay on the localhost setup page and never pass through MCP.
 
-Session wallets are named and persistent across restarts and shared between networks. Use the returned wallet's UUID as `sessionWalletId` on supported wallet reads and game/SweetHouse tools to select it; omitting the ID selects the first saved wallet. Do not infer that the most recently created wallet becomes the default.
+Named session wallets survive restarts and are shared between networks. Use the returned wallet's UUID as `sessionWalletId` on supported wallet reads and game/SweetHouse tools to select it; omitting the ID selects the first saved wallet. Do not infer that the most recently created wallet becomes the default.
 
 `get_session_wallet` returns the local session wallet public address, balances, funding QR code, and funding links without exposing the private key. It can show a setup link when no wallet exists.
 
