@@ -217,6 +217,8 @@ Install dependencies with pnpm:
 pnpm install
 ```
 
+GitHub Actions is restricted to the exact action revisions used by the workflows. When updating an action pin, update the repository action allowlist as well.
+
 Pull requests run validation, lint, and tests without an API key. Anthropic evaluations run manually or on the monthly schedule when the repository has an API key. Results are attached to the workflow run.
 
 To run skill evals locally with Anthropic:
