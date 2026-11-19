@@ -38,6 +38,8 @@ The root renderer uses cacheable external accessory SVGs. The `/embed` entry emb
 
 An explicit accessory `renderOptions.assetSrc` overrides ordinary catalogue artwork in both renderers. The embedded renderer still references an explicit override directly: a remote URL is not made self-contained. Supply a self-contained SVG data URL if an export must work offline. Check asset URLs in the consumer's built app too; a sibling source alias can hide broken URLs.
 
+Set `renderOptions.viewport` to `{ x, y, width, height }` in character SVG units to override accessory framing in either renderer. Otherwise, a VIP catalogue crown keeps its padded framing even with a custom image URL.
+
 ## Accessories, kits and gestures
 
 Pass catalogue entries or custom `SuiFrenAccessory` objects from `/accessories` with `name`, `type`, `category` and `renderOptions`. Use optional access for missing slots returned by `getAccessoriesByType`.
@@ -51,7 +53,7 @@ const outfit = buildRunnerAccessories({ color: '#ec7da6', number: 3, mirrorBib: 
 // Pass outfit as the image component's accessories array.
 ```
 
-Runner colors use six-digit hex values and bib numbers use integers 1–99; invalid values use library defaults. Set `mirrorBib` when the consumer mirrors the whole character. The helper supports both species and preserves separate leg layers.
+Runner colors use six-digit hex values and bib numbers use integers from 1 to 99. Invalid values use library defaults. Set `mirrorBib` when the consumer mirrors the whole character. The helper supports both species and preserves separate leg layers.
 
 For custom metadata, outfit options belong in `renderOptions.kit`: `{ type: 'runner', color: '#ec7da6', number: 3 }` or `{ type: 'soccer', country: 'FR', side: 'away' }`. A soccer kit may use a custom `team` instead of `country`; do not set both. Read the selected `SoccerTeamKit` type for custom team metadata instead of inventing fields. Keep football game country IDs separate from visual kit country codes.
 
