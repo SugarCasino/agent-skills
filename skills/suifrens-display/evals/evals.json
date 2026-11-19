@@ -5,18 +5,18 @@
 			"id": "suifrens-display-attributes-and-gesture",
 			"prompt": "Render a happy capy with a static thumbs-up using @sugarcasino/suifrens-display-system. Which imports and attributes should I use? Can I also use wave as a static gesture?",
 			"assertions": [
-				"Imports SuiFrenImage from the package root and CapyAttributes from /types",
+				"Imports SuiFrenImage from the package root and CapyAttributes from /attributes",
 				"Uses valid palette keys without a leading #, a skin, an expression and earShape",
 				"Uses gesture=\"thumbs_up\" on a full-body character without requiring animation",
 				"Explains wave is not a supported static gesture; the shared type accepts thumbs_up, thumbs_down and point"
 			]
 		},
 		{
-			"id": "suifrens-display-inline-export",
+			"id": "suifrens-display-embedded-export",
 			"prompt": "Create a standalone SVG with a custom accessory whose assetSrc points to a remote SVG.",
 			"assertions": [
-				"Uses SuiFrenImageInline from /image-inline",
-				"Explains a remote assetSrc remains an external reference even with the inline renderer",
+				"Uses SuiFrenImage from /embed",
+				"Explains a remote assetSrc remains an external reference even with the embedded renderer",
 				"Uses a self-contained SVG data URL for the override when offline export is required"
 			]
 		},

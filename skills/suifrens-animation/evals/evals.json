@@ -19,7 +19,7 @@
 				"Uses target damage 2 and delayMs 140 without an explicit target side",
 				"Uses victory iterations 3 rather than loops",
 				"Reads health and animation from useDuelScript state rather than a second health counter",
-				"Imports battle runtime from /battle and types from /types"
+				"Imports battle runtime from /battle and types from /battle"
 			]
 		},
 		{

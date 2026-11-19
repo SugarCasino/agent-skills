@@ -1,6 +1,6 @@
 ---
 name: suifrens-display
-description: Integrate @sugarcasino/suifrens-display-system character rendering in React, standalone SVG exports, or its Fastify SVG/PNG server. Use for capy and bullshark attributes, external versus inline SVG accessories, palettes, skins, expressions, static gestures, runner or football kits. Use suifrens-animation for playback and duel scripts; Sugar NFT V1 reads and minting belong to sugar-nft.
+description: Integrate @sugarcasino/suifrens-display-system character rendering in React, standalone SVG exports, or its Fastify SVG/PNG server. Use for capy and bullshark attributes, external versus embedded SVG accessories, palettes, skins, expressions, static gestures, runner or football kits. Use suifrens-animation for playback and duel scripts; Sugar NFT V1 reads and minting belong to sugar-nft.
 license: MIT
 metadata:
   author: sugar
