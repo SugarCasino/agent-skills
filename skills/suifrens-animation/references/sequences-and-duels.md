@@ -1,11 +1,11 @@
 # Custom sequences and scripted duels
 
-Import `AnimationPresetName` from `/types` to validate built-in core and battle preset names with `satisfies AnimationPresetName`. The union follows every registered preset catalogue; lookup APIs still accept dynamic strings and return no sequence for unknown names. Renderers play core presets immediately and load each deferred catalogue on first use. Requests share that catalogue load, and a failed load can be retried independently. Synchronous `/animation` helpers use the full catalogue.
+Import `AnimationPresetName` from `/animation` to validate built-in core and battle preset names with `satisfies AnimationPresetName`. The union follows every registered preset catalogue; lookup APIs still accept dynamic strings and return no sequence for unknown names. Renderers play core presets immediately and load each deferred catalogue on first use. Requests share that catalogue load, and a failed load can be retried independently. Synchronous `/animation` helpers use the full catalogue.
 
 ## Custom part animation
 
 ```ts
-import type { AnimationSequence } from '@sugarcasino/suifrens-display-system/types';
+import type { AnimationSequence } from '@sugarcasino/suifrens-display-system/animation';
 
 const nod = {
 	name: 'nod',
@@ -28,7 +28,7 @@ Sequence duration and keyframe `at` values use milliseconds. Parts are `body`, `
 
 ## Ground shadows
 
-Enable the boolean `shadow` prop on the image, for example `<SuiFrenImage attributes={attributes} shadow animation={{ preset: 'jump' }} />`. A built-in preset supplies its own shadow behavior. For a custom sequence, check that the installed package exposes `AnimationSequence.shadow` in `/types`, then set the field on the sequence. Its public type is `AnimationShadow`.
+Enable the boolean `shadow` prop on the image, for example `<SuiFrenImage attributes={attributes} shadow animation={{ preset: 'jump' }} />`. A built-in preset supplies its own shadow behavior. For a custom sequence, check that the installed package exposes `AnimationSequence.shadow` in `/animation`, then set the field on the sequence. Its public type is `AnimationShadow`.
 
 | Sequence value | Behavior with the image shadow enabled | Examples |
 | --- | --- | --- |
@@ -38,10 +38,10 @@ Enable the boolean `shadow` prop on the image, for example `<SuiFrenImage attrib
 
 ## Duels
 
-Import `useDuelScript`, `SuiFrenBattleSprite`, and `MinecraftHealthBar` from `/battle`. Import `DuelScript`, `DuelAttackStep`, and component/hook types from `/types`.
+Import `useDuelScript`, `SuiFrenBattleSprite`, and `MinecraftHealthBar` from `/battle`. Import `DuelScript`, `DuelAttackStep`, and component/hook types from `/battle`.
 
 ```ts
-import type { DuelScript } from '@sugarcasino/suifrens-display-system/types';
+import type { DuelScript } from '@sugarcasino/suifrens-display-system/battle';
 
 const script = {
 	name: 'Demo duel',
@@ -64,4 +64,4 @@ Call `useDuelScript({ script, baseExpression: { left: 'happy', right: 'happy' },
 
 Use `state.left` and `state.right` as the source of each fighter's health, maximum health, expression and animation. Pass those to the battle sprite with the matching attributes. Use that same health state for the health bar. The hook controls the scene's animation. For scenes that show an on-chain game result, build the script from the verified result; the animation cannot determine the outcome.
 
-`SuiFrenBattleSprite` owns its inline renderer, facing transform and health bar. Its API does not automatically accept every `SuiFrenImage` prop. Check its declared props before adding accessories or gestures to a battle sprite. Use `hitFlashTrigger` for repeated hit flashes without remounting the animated fighter.
+`SuiFrenBattleSprite` owns its embedded renderer, facing transform and health bar. Its API does not automatically accept every `SuiFrenImage` prop. Check its declared props before adding accessories or gestures to a battle sprite. Use `hitFlashTrigger` for repeated hit flashes without remounting the animated fighter.

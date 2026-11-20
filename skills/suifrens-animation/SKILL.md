@@ -20,7 +20,7 @@ Use [suifrens-display](../suifrens-display/SKILL.md) for character attributes, r
 
 ## Image playback
 
-Both `SuiFrenImage` and `SuiFrenImageInline` accept a single `animation` object. Select exactly one source: `preset` or a custom `sequence`. Omit `animation` or pass `null` for a static image.
+Both entry points export `SuiFrenImage`, which accepts a single `animation` object. Select exactly one source: `preset` or a custom `sequence`. Omit `animation` or pass `null` for a static image.
 
 ```tsx
 <SuiFrenImage
@@ -37,7 +37,7 @@ Both `SuiFrenImage` and `SuiFrenImageInline` accept a single `animation` object.
 - Changing `trigger` restarts the timeline. Use it to replay an action without remounting the character.
 - Keep `direction`, `startAt`, `holdOnComplete`, and `transitionMs` inside `animation` when used.
 
-Import `AnimationConfig`, `AnimationSequence`, `PlaybackOptions` and other public types from `/types`. Import `AnimationProvider`, hooks, `getPresetSequence`, `getPresetDurationMs`, and `normalizePlayback` from `/animation`. The image components already provide their animation context when `animation` is set; do not wrap them in another provider without a specific low-level need.
+Import animation types, `getPresetSequence` and `getPresetDurationMs` from `/animation`. Pass animation configuration to the image component.
 
 Read preset timing with `getPresetDurationMs(preset, playback)` to avoid copying duration constants. Validate unknown presets: `getPresetSequence` can return `undefined` and the duration helper returns `null` for unknown presets or infinite playback. Do not promise a preset based only on a natural-language action name.
 
